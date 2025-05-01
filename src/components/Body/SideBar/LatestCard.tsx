@@ -1,5 +1,8 @@
+'use client';
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+
 
 
 interface Props {
@@ -13,12 +16,19 @@ interface Props {
   }
 }
 
-const LatestCard = (props: Props): JSX.Element => {
+const LatestCard: React.FC<Props> = (props) => {
   const { blog } = props;
+  const pathname = usePathname()
+  const currentPathname = pathname
+
   return (
     <Link
       key={blog.id}
-      href={`blog/${blog.id}`}
+      href={
+        currentPathname.startsWith('/blog/[id]')
+          ? `/${blog.id}` // 現在閲覧中の記事ページの場合、IDのみ
+          : `/blog/${blog.id}` // それ以外の場合、/blog/ID
+      }
       className="w-full  rounded-md overflow-hidden flex p-0 relative mb-6 animate-fadeIn"
     >
       <div className="flex flex-col w-full">
