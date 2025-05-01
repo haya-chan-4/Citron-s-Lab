@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 
-type MetaInfoProps = {
+interface MetaInfoProps {
   publishedAt: string;
   category?: string;
-};
+}
 
 const MetaInfo: React.FC<MetaInfoProps> = ({ publishedAt, category }) => {
   const formattedDate = dayjs(publishedAt).format('YYYY.MM.DD');
