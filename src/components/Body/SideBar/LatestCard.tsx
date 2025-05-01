@@ -21,7 +21,7 @@ const LatestCard = (props: Props): JSX.Element => {
       href={`blog/${blog.id}`}
       className="w-full  rounded-md overflow-hidden flex p-0 relative mb-6 animate-fadeIn"
     >
-      <div className="flex flex-col items-center w-full ">
+      <div className="flex flex-col w-full">
         <div className="relative w-72 h-36 overflow-hidden rounded">
           <Image
             src={blog.thumbnail.url}
