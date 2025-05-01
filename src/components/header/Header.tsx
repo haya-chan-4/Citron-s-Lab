@@ -12,7 +12,7 @@ const Header = (props: Props): JSX.Element => {
 
   return (
     <Suspense fallback={<Spinner />}>
-      <header className="bg-teal-800 shadow-md w-screen m-0">
+      <header className="bg-gray-800 shadow-md w-screen m-0">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href='/' className="text-xl font-bold text-gray-400">
             {title}

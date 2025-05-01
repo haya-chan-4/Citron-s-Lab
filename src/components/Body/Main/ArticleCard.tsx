@@ -19,9 +19,9 @@ const ArticleCard = (props: Props): JSX.Element => {
     <Link
       key={blog.id}
       href={`blog/${blog.id}`}
-      className="w-full border rounded-2xl shadow-md hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-6"
+      className="w-full border rounded-2xl shadow-md hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-6 sm:w-auto animate-fadeIn"
     >
-      <div className="flex flex-col sm:flex-row items-center w-full">
+      <div className="flex flex-col sm:flex-row items-center w-full ">
         <div className="m-0 p-0 relative sm:w-64 sm:h-40 flex-shrink-0 w-full h-56">
           <Image
             src={blog.thumbnail.url}
