@@ -1,14 +1,13 @@
 // types/blog.ts
 
 export type Blog = {
+  publishedAt: string;
   thumbnail: {
     url: string;
     width: number;
     height: number;
   };
-  category: {
-    name: string
-  }
+  category: string,
   props: string
   id: string;
   title: string;
@@ -18,7 +17,7 @@ export type Blog = {
     height: number;
     width: number;
   };
-  publishedAt?: string;
+
   updatedAt?: string;
   fields: {
     id: string
