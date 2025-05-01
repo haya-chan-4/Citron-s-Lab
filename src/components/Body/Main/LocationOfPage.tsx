@@ -5,8 +5,8 @@ interface LocationOfPageProps {
 title: string
 }
 
-const LocationOfPage: React.FC<LocationOfPageProps> = (post): JSX.Element => {
-  const { title } = post
+const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
+  const { title } = props
   return (
     <nav className="text-sm text-gray-500 mb-4">
       <Link href="/" className="hover:underline">
