@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Comment from '@/components/Comment/Comment'
 import SideBar from '@/components/Body/SideBar/SideBar'
 import MetaInfo from '@/components/Body/Main/MetaInfo'
+import LocationOfPage from '@/components/Body/Main/LocationOfPage'
 
 
 export const revalidate = 60
@@ -26,13 +27,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
       {/* メインコンテンツ */}
       <article className="flex-1">
         {/* パンくず */}
-        <nav className="text-sm text-gray-500 mb-4">
-          <Link href="/" className="hover:underline">
-            ホーム
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-700">{post.title}</span>
-        </nav>
+        <LocationOfPage title={post.title} />
         {/* アイキャッチ画像 */}
         {post.thumbnail?.url && (
           <div className="relative w-full aspect-video mb-6 rounded-md overflow-hidden shadow-sm">
