@@ -1,16 +1,17 @@
 // app/blog/[id]/page.tsx
+import LatestCard from '@/components/Body/Sub/LatestCard';
 import { client } from '@/libs/client';
+import { Blog } from '@/types/blog';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { BsTwitter, BsFacebook, BsHatena } from 'react-icons/bs';
 
 type BlogPost = {
   id: string;
   title: string;
   publishedAt: string;
   category?: { name: string };
-  eyecatch?: { url: string; width: number; height: number };
+  thumbnail?: { url: string; width: number; height: number };
   body: string;
 };
 
@@ -24,6 +25,17 @@ async function getBlogPost(id: string): Promise<BlogPost> {
   return client.get({ endpoint: `blog/${id}` });
 }
 
+const getBlogs = async (): Promise<Blog[]> => {
+  const data = await client.get({
+    endpoint: 'blog',
+    queries: {
+      limit: 3,
+      fields: 'id,title,publishedAt,thumbnail'
+    },
+  });
+  return data.contents;
+};
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -31,6 +43,9 @@ export default async function BlogPostPage({
 }) {
   const post = await getBlogPost(params.id);
   const formattedDate = dayjs(post.publishedAt).format('YYYY.MM.DD');
+
+  const blogs = await getBlogs();
+
 
   return (
     <main className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-10 gap-8 animate-fadeIn">
@@ -50,10 +65,10 @@ export default async function BlogPostPage({
         </nav>
 
         {/* アイキャッチ画像 */}
-        {post.eyecatch?.url && (
+        {post.thumbnail?.url && (
           <div className="relative w-full aspect-video mb-6 rounded-lg overflow-hidden shadow-lg">
             <Image
-              src={post.eyecatch.url}
+              src={post.thumbnail.url}
               alt={post.title}
               fill
               className="object-cover"
@@ -88,36 +103,49 @@ export default async function BlogPostPage({
       {/* サイドバー */}
       <aside className="hidden lg:block w-80 space-y-6">
         {/* カテゴリー一覧 */}
-        <section className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-3">カテゴリ</h2>
-          <ul className="space-y-2 text-gray-700">
-            <li>
-              <Link href="/blog?category=tech" className="hover:underline">
+        <section className="bg-white p-4 ">
+          <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">カテゴリ</h2>
+          <ul className="space-y-0 divide-y divide-gray-200 text-gray-700">
+            <li className="py-2">
+              <Link href="/blog?category=tech" className="hover:text-gray-900">
                 Tech
               </Link>
             </li>
-            <li>
-              <Link href="/blog?category=design" className="hover:underline">
+            <li className="py-2">
+              <Link href="/blog?category=design" className="hover:text-gray-900">
                 Design
               </Link>
             </li>
-            {/* 他カテゴリ */}
+            <li className="py-2">
+              <Link href="/blog?category=life" className="hover:text-gray-900">
+                Life
+              </Link>
+            </li>
+            <li className="py-2">
+              <Link href="/blog?category=career" className="hover:text-gray-900">
+                Career
+              </Link>
+            </li>
           </ul>
         </section>
 
         {/* 最新記事 */}
-        <section className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-3">最新記事</h2>
+        <section className="bg-white p-4">
+          <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">最新記事</h2>
           <ul className="space-y-2">
             {/* 例: thisMonthPosts.map */}
-            <li>
-              <Link
-                href="/blog/abc123"
-                className="text-blue-600 hover:underline block"
-              >
-                タイトルが入ります…
-              </Link>
-            </li>
+            {blogs.map((blog) => (
+              <LatestCard
+                key={blog.id}
+                blog={{
+                  id: blog.id,
+                  thumbnail: {
+                    url: blog.thumbnail.url
+                  },
+                  title: blog.title,
+                  publishedAt: blog.publishedAt ?? ''
+                }} />
+            ))}
           </ul>
         </section>
       </aside>

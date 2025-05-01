@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen text-gray-600 text-sm font-sans m-0`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen text-gray-600 text-sm font-sans bg-white m-0`}
       >
         <Header title={"INFJ's Lab"} />
         {children}
