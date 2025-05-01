@@ -5,7 +5,8 @@ interface MetaInfoProps {
   category?: string;
 }
 
-const MetaInfo: React.FC<MetaInfoProps> = ({ publishedAt, category }) => {
+const MetaInfo: React.FC<MetaInfoProps> = (props) => {
+  const { publishedAt, category } = props
   const formattedDate = dayjs(publishedAt).format('YYYY.MM.DD');
 
   return (
