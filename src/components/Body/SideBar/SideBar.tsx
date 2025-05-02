@@ -15,17 +15,30 @@ const getBlogs = async (): Promise<Blog[]> => {
   });
   return data.contents;
 };
+const getCategories = async (): Promise<Blog[]> => {
+  const data = await client.get({
+    endpoint: 'blog',
+    queries: {
+      limit: 100,
+      fields: 'id,title,publishedAt,thumbnail,category'
+    },
+  });
+  return data.contents;
+};
 
-const SideBar: React.FC<Props> = async (props) => {
-  const blogs = await getBlogs();
-  const { } = props;
+const SideBar: React.FC<Props> = async () => {
+  const [blogs, categories] = await Promise.all([
+    getBlogs(),
+    getCategories()
+  ])
+
   return (
     <aside className="hidden lg:block w-80 space-y-6">
       {/* カテゴリー一覧 */}
       <section className="bg-white p-4 ">
         <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">カテゴリ</h2>
         <ul className="space-y-0 divide-y divide-gray-200 text-gray-700">
-          {blogs.map((blog) => (
+          {categories.map((blog) => (
             <CategoryItem
               key={blog.id}
               category={blog.category}
