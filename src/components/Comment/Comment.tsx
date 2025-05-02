@@ -1,6 +1,5 @@
 // components/Comments.tsx
 'use client'
-
 import { useState, useEffect } from 'react';
 
 interface Comment {
@@ -12,7 +11,7 @@ interface Comment {
 
 const Comment = ({ blogId }: { blogId: string }) => {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState('名無しさん');
   const [body, setBody] = useState('');
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Comment = ({ blogId }: { blogId: string }) => {
         ))}
       </ul>
 
-      <form onSubmit={handleSubmit} className="space-y-2 mt-6">
+      <form onSubmit={handleSubmit} className="space-y-2 mt-6 w-[640px]">
         <input
           type="text"
           placeholder="お名前"
@@ -59,9 +58,9 @@ const Comment = ({ blogId }: { blogId: string }) => {
           placeholder="コメント"
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border px-3 py-2 rounded h-64"
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button type="submit" className="bg-indigo-700 text-white px-4 py-2 rounded">
           送信
         </button>
       </form>
