@@ -1,4 +1,4 @@
-export type BlogPost = {
+export interface BlogPost  {
   id: string;
   title: string;
   publishedAt: string;

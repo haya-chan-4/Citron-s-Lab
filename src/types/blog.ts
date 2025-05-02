@@ -1,13 +1,14 @@
 // types/blog.ts
+import { Category } from "@/types/category";
 
-export type Blog = {
+export interface Blog  {
   publishedAt: string;
   thumbnail: {
     url: string;
     width: number;
     height: number;
   };
-  category: string,
+  category: string
   props: string
   id: string;
   title: string;
