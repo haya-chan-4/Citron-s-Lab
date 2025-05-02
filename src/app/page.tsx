@@ -1,4 +1,4 @@
-
+// app/blog/page.tsx
 import MainContent from '@/components/Body/Main/MainContent';
 import SideBar from '@/components/Body/SideBar/SideBar';
 

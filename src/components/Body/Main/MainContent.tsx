@@ -26,12 +26,12 @@ const MainContent = async () => {
           <ArticleCard
             key={blog.id}
             blog={{
+              category: blog.category,
               id: blog.id,
               thumbnail: {
                 url: blog.thumbnail.url
               },
               title: blog.title,
-              category: blog.category,
               publishedAt: blog.publishedAt ?? '',
             }} />
         ))}

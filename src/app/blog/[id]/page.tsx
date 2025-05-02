@@ -54,7 +54,6 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
         </div>
         <Comment blogId={''} />
       </article>
-
       {/* サイドバー */}
       <SideBar />
     </main>
