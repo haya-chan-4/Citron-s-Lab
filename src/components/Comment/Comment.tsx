@@ -60,7 +60,7 @@ const Comment = ({ blogId }: { blogId: string }) => {
           onChange={(e) => setBody(e.target.value)}
           className="w-full border px-3 py-2 rounded h-64"
         />
-        <button type="submit" className="bg-indigo-700 text-white px-4 py-2 rounded">
+        <button type="submit" className="bg-teal-500 w-full text-white px-4 py-2 rounded">
           送信
         </button>
       </form>
