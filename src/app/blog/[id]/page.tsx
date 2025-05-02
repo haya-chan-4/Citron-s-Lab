@@ -27,7 +27,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
       {/* メインコンテンツ */}
       <article className="flex-1">
         {/* パンくず */}
-        <LocationOfPage title={post.title} />
+        <LocationOfPage category={post.category} />
         {/* アイキャッチ画像 */}
         {post.thumbnail?.url && (
           <div className="relative w-full aspect-video mb-6 rounded-md overflow-hidden shadow-sm">
