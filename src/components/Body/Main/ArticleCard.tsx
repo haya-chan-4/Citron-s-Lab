@@ -1,25 +1,32 @@
+'use client';
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 
-interface Props {
+interface ArticleCardProps {
   blog: {
-    category: string,
-    id: string
-    thumbnail: {
-      url: string
-    }
-    title: string
+    id: string;
+    category: string;
+    title: string;
     publishedAt?: string;
-  }
-}
+    thumbnail: {
+      url: string;
+    };
+}}
 
-const ArticleCard = (props: Props): JSX.Element => {
-  const { blog } = props;
+const ArticleCard = (props: ArticleCardProps): JSX.Element => {
+  const { blog } = props
+  const pathname = usePathname()
+  const currentPathname = pathname
   return (
     <Link
       key={blog.id}
-      href={`blog/${blog.id}`}
+      href={
+        currentPathname.startsWith('/blog/[id]')
+          ? `/${blog.id}` // 現在閲覧中のカテゴリページの場合、IDのみ
+          : `/category/${blog.id}` // それ以外の場合、/blog/ID
+      }
       className="w-full border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-2 sm:w-auto animate-fadeIn"
     >
       <div className="flex flex-col sm:flex-row  w-full ">
@@ -36,12 +43,12 @@ const ArticleCard = (props: Props): JSX.Element => {
             {blog.title}
           </h2>
           <div className='grid text-lg text-gray-700 px-5 pb-4'>
-            <p className="w-max h-min grid-item col-span-1 text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] mb-2">
+            <span className="w-max h-min grid-item col-span-1 text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] mb-2">
               {blog.category}
-            </p>
-            <p className="text-sm text-gray-500">
+            </span>
+            <time className="text-sm text-gray-500">
               投稿日: {new Date(blog.publishedAt ?? '').toLocaleDateString()}
-            </p>
+            </time>
           </div>
         </div>
       </div>
