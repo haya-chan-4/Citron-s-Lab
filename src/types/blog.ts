@@ -1,5 +1,5 @@
 // types/blog.ts
-import { Category } from "@/types/category";
+
 
 export interface Blog  {
   publishedAt: string;
@@ -25,3 +25,4 @@ export interface Blog  {
     title: string
   }
 };
+
