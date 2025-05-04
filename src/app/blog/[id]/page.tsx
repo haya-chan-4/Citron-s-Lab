@@ -2,7 +2,7 @@
 import { client } from '@/libs/client'
 import { BlogPost } from "@/types/blogPost"
 import Image from 'next/image'
-import Link from 'next/link'
+// import Link from 'next/link'
 import Comment from '@/components/Comment/Comment'
 import SideBar from '@/components/Body/SideBar/SideBar'
 import MetaInfo from '@/components/Body/Main/MetaInfo'

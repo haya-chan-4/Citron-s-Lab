@@ -1,6 +1,8 @@
 // import ArticleCard from '@/components/Body/Main/ArticleCard';
+import ArticleCard from '@/components/Body/Main/ArticleCard';
+import SideBar from '@/components/Body/SideBar/SideBar';
 import { client } from '@/libs/client'; // microCMSクライアントのパスを確認
-import Link from 'next/link';
+
 
 // microCMSから返されるブログ記事の型定義
 // (他のファイルで定義済みの場合は import してもOK)
@@ -11,8 +13,11 @@ interface Blog {
   publishedAt: string;
   revisedAt: string;
   title: string;
+  thumbnail: {
+    url: string
+  }
   // 他に必要なプロパティがあれば追加
-  category?: Category; // カテゴリー情報も含まれる場合 (任意)
+  category?: string; // カテゴリー情報も含まれる場合 (任意)
 }
 
 // microCMSから返されるカテゴリーの型定義
@@ -82,8 +87,8 @@ const CategoryIdPage = async ({ params }: CategoryPageProps) => {
   // カテゴリーに紐付いたコンテンツがない場合に表示
   if (blog.length === 0) {
     // データ取得エラーの場合もここに来る可能性がある
-    console.log(`No blog content found for category: ${categoryId}`);
-    return <div>このカテゴリーのブログ記事はありません。</div>;
+    console.log(`No blog content found for category: ${categoryId}`)
+    return <div>このカテゴリーのブログ記事はありません。</div>
   }
 
   // ブログ記事一覧を表示
@@ -95,19 +100,19 @@ const CategoryIdPage = async ({ params }: CategoryPageProps) => {
       <ul className="grid grid-cols-1 sm:grid-cols-1 gap-4">
         {blog.map((post) => ( // 変数名を post に変更 (blog 配列の要素なので)
           <li key={post.id}>
-            <Link href={`/blog/${post.id}`}>{post.title}</Link>
+            <ArticleCard blog={{
+              id: post.id,
+              category: post.category ?? '',
+              title: post.title,
+              publishedAt: post.publishedAt ?? '',
+              thumbnail: {
+                url: post.thumbnail.url
+              }
+            }} />
           </li>
-          // <ArticleCard key={post.id} blog={{
-          //   category: '',
-          //   id: '',
-          //   thumbnail: {
-          //     url: ''
-          //   },
-          //   title: '',
-          //   publishedAt: undefined
-          // }}/>
         ))}
       </ul>
+      <SideBar />
     </div>
   );
 };
