@@ -4,7 +4,7 @@ import ArticleCard from '@/components/Body/Main/ArticleCard'
 
 export const revalidate = 60;
 
-const getBlogs = async (): Promise<Blog[]> => {
+const getPosts = async (): Promise<Blog[]> => {
   const data = await client.get({
     endpoint: 'blog',
     queries: {
@@ -16,23 +16,23 @@ const getBlogs = async (): Promise<Blog[]> => {
 };
 
 const MainContent = async () => {
-  const blogs = await getBlogs();
+  const posts = await getPosts();
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-9 w-full ">
       <h1 className="text-md font-bold mb-8">記事一覧</h1>
       <ul className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-        {blogs.map((blog) => (
+        {posts.map((post) => (
           <ArticleCard
-            key={blog.id}
+            key={post.id}
             blog={{
-              category: blog.category,
-              id: blog.id,
+              category: post.category,
+              id: post.id,
               thumbnail: {
-                url: blog.thumbnail.url
+                url: post.thumbnail.url
               },
-              title: blog.title,
-              publishedAt: blog.publishedAt ?? '',
+              title: post.title,
+              publishedAt: post.publishedAt ?? '',
             }} />
         ))}
       </ul>
