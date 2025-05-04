@@ -96,22 +96,24 @@ const CategoryIdPage = async ({ params }: CategoryPageProps) => {
     <div className='flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-10 gap-8 animate-fadeIn'>
       {/* 必要であればカテゴリー名などを表示 */}
       {/* <h1>Category: {categoryId}</h1> */}
-      <h2 className="text-md font-bold mb-8">記事一覧</h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-        {blog.map((post) => ( // 変数名を post に変更 (blog 配列の要素なので)
-          <li key={post.id}>
-            <ArticleCard blog={{
-              id: post.id,
-              category: post.category ?? '',
-              title: post.title,
-              publishedAt: post.publishedAt ?? '',
-              thumbnail: {
-                url: post.thumbnail.url
-              }
-            }} />
-          </li>
-        ))}
-      </ul>
+      <main className='max-w-4xl mx-auto px-4 py-9 sm:w-[800px]'>
+        <h2 className="text-md font-bold mb-8">記事一覧</h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+          {blog.map((post) => ( // 変数名を post に変更 (blog 配列の要素なので)
+            <li key={post.id}>
+              <ArticleCard blog={{
+                id: post.id,
+                category: post.category ?? '',
+                title: post.title,
+                publishedAt: post.publishedAt ?? '',
+                thumbnail: {
+                  url: post.thumbnail.url
+                }
+              }} />
+            </li>
+          ))}
+        </ul>
+      </main>
       <SideBar />
     </div>
   );
