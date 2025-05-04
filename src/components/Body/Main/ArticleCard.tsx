@@ -25,7 +25,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
       href={
         currentPathname.startsWith('/blog/[id]')
           ? `/${blog.id}` // 現在閲覧中のカテゴリページの場合、IDのみ
-          : `/category/${blog.id}` // それ以外の場合、/blog/ID
+          : `/blog/${blog.id}` // それ以外の場合、/blog/ID
       }
       className="w-full border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-2 sm:w-auto animate-fadeIn"
     >
