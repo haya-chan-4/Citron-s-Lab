@@ -23,9 +23,9 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
   const post = await getBlogPost(params.id)
 
   return (
-    <main className="flex flex-col lg:flex-row max-w-screen-xl gap-8 py-10 sm:px-4 md:px-24 lg:pl-24">
+    <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">
       {/* メインコンテンツ */}
-      <article className="flex-1 animate-fadeIn mx-4">
+      <article className="flex-1 animate-fadeIn xl:mx-auto xl:px-4 px-4  w-full max-w-4xl">
         {/* パンくず */}
         <LocationOfPage category={post.category} />
         {/* アイキャッチ画像 */}
@@ -56,7 +56,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
       </article>
       {/* サイドバー */}
       <SideBar />
-    </main>
+    </div>
   )
 }
 export default BlogPostPage
