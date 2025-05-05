@@ -1,7 +1,6 @@
-// import ArticleCard from '@/components/Body/Main/ArticleCard';
-import ArticleCard from '@/components/Body/Main/ArticleCard';
 import SideBar from '@/components/Body/SideBar/SideBar';
 import { client } from '@/libs/client'; // microCMSクライアントのパスを確認
+import CategoryList from '@/components/Body/Main/CategoryList';
 
 
 // microCMSから返されるブログ記事の型定義
@@ -22,15 +21,15 @@ interface Blog {
 
 // microCMSから返されるカテゴリーの型定義
 // (他のファイルで定義済みの場合は import してもOK)
-interface Category {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  name: string;
-  // 他に必要なプロパティがあれば追加
-}
+// interface Category {
+//   id: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   publishedAt: string;
+//   revisedAt: string;
+//   name: string;
+//   // 他に必要なプロパティがあれば追加
+// }
 
 // Propsの型定義 (URLパラメータ)
 interface CategoryPageProps {
@@ -42,23 +41,23 @@ interface CategoryPageProps {
 
 
 // 静的生成のためのパスを生成 (旧 getStaticPaths)
-export const generateStaticParams = async () => {
-  try {
-    console.log("Generating static params for categories...");
-    const data = await client.get<{ contents: Category[] }>({ endpoint: "category" }); // 型を指定
-    console.log("Fetched categories for static params:", data.contents.length);
+// export const generateStaticParams = async () => {
+//   try {
+//     console.log("Generating static params for categories...");
+//     const data = await client.get<{ contents: Category[] }>({ endpoint: "category" }); // 型を指定
+//     console.log("Fetched categories for static params:", data.contents.length);
 
-    const paths = data.contents.map((content) => ({
-      id: content.id, // オブジェクトのキーをパラメータ名 'id' に合わせる
-    }));
-    console.log("Generated paths:", paths);
-    return paths;
+//     const paths = data.contents.map((content) => ({
+//       id: content.id, // オブジェクトのキーをパラメータ名 'id' に合わせる
+//     }));
+//     console.log("Generated paths:", paths);
+//     return paths;
 
-  } catch (error) {
-    console.error("Error fetching categories for static params:", error);
-    return []; // エラー時は空配列を返す
-  }
-};
+//   } catch (error) {
+//     console.error("Error fetching categories for static params:", error);
+//     return []; // エラー時は空配列を返す
+//   }
+// };
 
 
 // カテゴリー別ブログ一覧ページコンポーネント (Server Component)
@@ -93,27 +92,8 @@ const CategoryIdPage = async ({ params }: CategoryPageProps) => {
 
   // ブログ記事一覧を表示
   return (
-    <div className='flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-10 gap-8 animate-fadeIn'>
-      {/* 必要であればカテゴリー名などを表示 */}
-      {/* <h1>Category: {categoryId}</h1> */}
-      <main className='max-w-4xl mx-auto px-4 py-9 sm:w-[800px]'>
-        <h2 className="text-md font-bold mb-8">記事一覧</h2>
-        <ul className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-          {blog.map((post) => ( // 変数名を post に変更 (blog 配列の要素なので)
-            <li key={post.id}>
-              <ArticleCard blog={{
-                id: post.id,
-                category: post.category ?? '',
-                title: post.title,
-                publishedAt: post.publishedAt ?? '',
-                thumbnail: {
-                  url: post.thumbnail.url
-                }
-              }} />
-            </li>
-          ))}
-        </ul>
-      </main>
+    <div className='flex flex-col lg:flex-row py-10 sm:px-4 md:px-24'>
+      <CategoryList blog={blog} />
       <SideBar />
     </div>
   );

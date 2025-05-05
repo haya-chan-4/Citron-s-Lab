@@ -33,7 +33,7 @@ const SideBar: React.FC<Props> = async () => {
   ])
 
   return (
-    <aside className="hidden lg:block w-80 space-y-6">
+    <aside className="hidden xl:block w-80 space-y-6">
       {/* カテゴリー一覧 */}
       <section className="bg-white p-4 ">
         <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">カテゴリ</h2>
