@@ -27,7 +27,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
           ? `/${blog.id}` // 現在閲覧中のカテゴリページの場合、IDのみ
           : `/blog/${blog.id}` // それ以外の場合、/blog/ID
       }
-      className="w-full border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-2 sm:w-auto animate-fadeIn"
+      className="w-full border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-2 sm:w-auto"
     >
       <div className="flex flex-col sm:flex-row  w-full ">
         <div className="m-0 p-0 relative sm:w-64 sm:h-40 flex-shrink-0 w-full h-56">
