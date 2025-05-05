@@ -29,7 +29,7 @@ const LatestCard: React.FC<Props> = (props) => {
           ? `/${blog.id}` // 現在閲覧中の記事ページの場合、IDのみ
           : `/blog/${blog.id}` // それ以外の場合、/blog/ID
       }
-      className="w-full  rounded-md overflow-hidden flex p-0 relative mb-6 animate-fadeIn"
+      className="w-full rounded-md overflow-hidden flex p-0 relative mb-6"
     >
       <div className="flex flex-col w-full">
         <div className="relative w-72 h-36 overflow-hidden rounded">

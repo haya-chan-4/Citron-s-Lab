@@ -14,12 +14,12 @@ interface ArticleContentProps {
 
 const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
   return (
-    <article className="flex-1 animate-fadeIn w-full max-w-4xl px-4 xl:px-0 ">
+    <article className="flex-1 w-full max-w-[820px] px-4 xl:px-0 ">
       {/* パンくず */}
       <LocationOfPage category={post.category} />
       {/* アイキャッチ画像 */}
       {post.thumbnail?.url && (
-        <div className="relative aspect-video mb-6 rounded-md overflow-hidden shadow-sm">
+        <div className="relative aspect-video mb-6 rounded-md overflow-hidden shadow-sm max-w-[800px]">
           <Image
             src={post.thumbnail.url}
             alt={post.title}
