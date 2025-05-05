@@ -1,11 +1,7 @@
 // app/blog/[id]/page.tsx
 import { client } from '@/libs/client'
 import { BlogPost } from "@/types/blogPost"
-// import Link from 'next/link'
-// import Comment from '@/components/Comment/Comment'
 import SideBar from '@/components/Body/SideBar/SideBar'
-// import MetaInfo from '@/components/Body/Main/MetaInfo'
-// import LocationOfPage from '@/components/Body/Main/LocationOfPage'
 import ArticleContent from '@/components/Body/Main/ArticleContent'
 
 
