@@ -2,6 +2,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { Clock4 } from 'lucide-react';
+import React from 'react';
+
 
 
 interface ArticleCardProps {
@@ -13,7 +16,8 @@ interface ArticleCardProps {
     thumbnail: {
       url: string;
     };
-}}
+  }
+}
 
 const ArticleCard = (props: ArticleCardProps): JSX.Element => {
   const { blog } = props
@@ -46,8 +50,9 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
             <span className="w-max h-min grid-item col-span-1 text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] mb-2">
               {blog.category}
             </span>
-            <time className="text-sm text-gray-500">
-              投稿日: {new Date(blog.publishedAt ?? '').toLocaleDateString()}
+            <time className="text-base text-gray-600 flex items-center">
+              <Clock4 className="mr-2 size-4 text-gray-500" />
+              {new Date(blog.publishedAt ?? '').toLocaleDateString()}
             </time>
           </div>
         </div>
@@ -56,4 +61,4 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
   )
 }
 
-export default ArticleCard
+export default React.memo(ArticleCard);

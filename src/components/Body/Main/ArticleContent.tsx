@@ -15,8 +15,7 @@ interface ArticleContentProps {
 const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
   return (
     <article className="flex-1 w-full max-w-[820px] px-4 xl:px-0 ">
-      {/* パンくず */}
-      <LocationOfPage category={post.category} />
+
       {/* アイキャッチ画像 */}
       {post.thumbnail?.url && (
         <div className="relative aspect-video mb-6 rounded-md overflow-hidden shadow-sm max-w-[800px]">
@@ -28,6 +27,8 @@ const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
           />
         </div>
       )}
+      {/* パンくず */}
+      <LocationOfPage category={post.category} />
 
       {/* タイトル */}
       <h1 className="text-3xl font-bold mb-4 text-gray-800  sm:w-full">
