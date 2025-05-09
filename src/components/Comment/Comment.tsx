@@ -1,18 +1,23 @@
-'use client';
-import { useState, useEffect } from 'react';
+// components/Comments.tsx
+'use client'
+import { useState, useEffect } from 'react'
 import {
   collection,
   query,
+  where,
   orderBy,
   onSnapshot,
   addDoc,
   serverTimestamp,
   Timestamp,
-} from 'firebase/firestore';
-import { db } from '@/libs/firebase';
+} from 'firebase/firestore'
+import { db } from '@/libs/firebase'
 
+interface CommentProps {
+  blogId: string
+}
 
-const Comment = () => {
+const Comment = ({ blogId }: CommentProps) => {
   const [name, setName] = useState('名無しさん')
   const [body, setBody] = useState('')
   const [comments, setComments] = useState<
@@ -20,12 +25,16 @@ const Comment = () => {
   >([])
 
   useEffect(() => {
-    const q = query(collection(db, 'comments'), orderBy('date', 'asc'))
+    // blogId でフィルタリングして、昇順ソート（投稿順）
+    const q = query(
+      collection(db, 'comments'),
+      where('blogId', '==', blogId),
+      orderBy('date', 'asc')
+    )
     const unSub = onSnapshot(q, (snapshot) => {
       setComments(
         snapshot.docs.map((doc) => {
           const data = doc.data()
-          // date フィールドが null の場合は new Date() を代わりに使う
           const rawDate = data.date as Timestamp | null
           const date = rawDate?.toDate() ?? new Date()
           return {
@@ -38,16 +47,17 @@ const Comment = () => {
       )
     })
     return () => unSub()
-  }, [])
+  }, [blogId])
 
   const commentSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!body.trim()) return alert('コメントを入力してください')
     try {
       await addDoc(collection(db, 'comments'), {
+        blogId,                  // ← ここで blogId を一緒に保存
         name,
         body,
-        date: serverTimestamp(), // サーバー側タイムスタンプ
+        date: serverTimestamp(),
       })
       setBody('')
     } catch {
@@ -58,22 +68,19 @@ const Comment = () => {
   return (
     <div className="mt-10 space-y-6 px-5 w-full">
       <h3 className="text-lg font-semibold">コメント</h3>
-
       <ul className="space-y-6 w-full">
         {comments.map((comment) => (
-          <li key={comment.id} className="bg-white py-8 ">
+          <li key={comment.id} className="bg-white py-10">
             <div className="flex items-center justify-between mb-2">
-              <p className="font-semibold pb-3 text-gray-800">{comment.name}</p>
+              <p className="font-semibold text-gray-800">{comment.name}</p>
               <time className="text-xs text-gray-400">
                 {comment.date.toLocaleString()}
               </time>
             </div>
-            <p className="text-gray-700 leading-relaxed">{comment.body}</p>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">{comment.body}</p>
           </li>
         ))}
       </ul>
-
-      {/* onSubmit はフォームに */}
       <form onSubmit={commentSubmit} className="space-y-2 mt-6">
         <input
           type="text"
@@ -96,7 +103,7 @@ const Comment = () => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Comment;
+export default Comment

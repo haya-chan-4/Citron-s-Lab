@@ -36,7 +36,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
       </div>
       <div className="mt-12 flex justify-center pb-20">
         <div className="w-full max-w-3xl">  {/* ここの max-w-? はお好みで調整 */}
-          <Comment />
+          <Comment blogId={post.id} />
         </div>
       </div>
     </div>
