@@ -11,7 +11,11 @@ export const generateStaticParams = async () => {
 }
 
 const getBlogPost = async (id: string): Promise<BlogPost> => {
-  return client.get({ endpoint: `blog/${id}` })
+  const data = await client.get({
+    endpoint: 'blog',
+    contentId: id,
+  });
+  return data;
 }
 
 const BlogPostPage = async ({ params }: { params: { id: string } }) => {
