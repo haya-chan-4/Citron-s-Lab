@@ -57,7 +57,7 @@ const Comment = () => {
         {comments.map((comment) => (
           <li
             key={comment.id}
-            className="bg-white"
+            className="bg-white py-5"
           >
             <div className="flex items-center justify-between mb-2">
               <p className="font-semibold text-gray-800">{comment.name}</p>

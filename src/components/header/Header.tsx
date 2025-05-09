@@ -10,46 +10,20 @@ interface Props {
 
 const Header = (props: Props): JSX.Element => {
   const { title } = props;
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(true);
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   return (
     <Suspense fallback={<Spinner />}>
       <header className="bg-indigo-900 shadow-md w-screen m-0">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href='/' className="text-xl font-bold text-gray-200">
-            {title}
-          </Link>
-
-          {/* 検索アイコン */}
-          <button
-            onClick={toggleSearch}
-            className="text-gray-400 hover:text-white transition-colors focus:outline-none"
-            aria-label="検索を開く"
-          >
-            <Search size={20} />
-          </button>
-        </div>
-
-        {/* 検索フォーム */}
-        {/* {isSearchOpen && (
-          <div className="bg-gray-800">
-            <div className="max-w-5xl mx-auto px-4 py-2 flex">
-              <input
-                type="text"
-                placeholder="キーワード検索..."
-                className="w-full px-3 py-2 rounded-l-md focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 px-4 py-2 rounded-r-md text-white hover:bg-blue-700 transition-colors"
-              >
-                検索
-              </button>
-            </div>
+        <div className="max-w-5xl mx-auto px-4 min-h-16 flex items-center">
+          <div className="flex items-center justify-between w-full">
+            <Link href='/' className="text-xl font-bold text-gray-200">
+              {title}
+            </Link>
           </div>
-        )} */}
+        </div>
       </header>
     </Suspense>
   );

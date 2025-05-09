@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import LocationOfPage from '@/components/Body/Main/LocationOfPage';
 import MetaInfo from '@/components/Body/Main/MetaInfo';
+import Comment from '@/components/Comment/Comment';
 
 interface ArticleContentProps {
   post: {
@@ -42,6 +43,8 @@ const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
       <div className="prose max-w-full prose-sm md:prose-lg prose-headings:font-semibold prose-img:rounded-sm prose-a:text-blue-600 sm:w-full ">
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
       </div>
+      {/* コメント */}
+      {/* <Comment /> */}
     </article>
   );
 };
