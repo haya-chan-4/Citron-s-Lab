@@ -34,7 +34,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
       className="w-full border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden flex p-0 relative mb-2 sm:w-auto"
     >
       <div className="flex flex-col sm:flex-row  w-full ">
-        <div className="m-0 p-0 relative sm:w-64 sm:h-40 flex-shrink-0 w-full h-56">
+        <div className="m-0 p-0 relative sm:w-64 lg:h-44 flex-shrink-0 w-full h-56">
           <Image
             src={blog.thumbnail.url}
             fill

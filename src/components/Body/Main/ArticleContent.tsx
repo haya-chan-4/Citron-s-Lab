@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import LocationOfPage from '@/components/Body/Main/LocationOfPage';
 import MetaInfo from '@/components/Body/Main/MetaInfo';
-import Comment from '@/components/Comment/Comment';
+// import Comment from '@/components/Comment/Comment';
 
 interface ArticleContentProps {
   post: {
