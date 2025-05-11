@@ -1,105 +1,68 @@
-import SideBar from '@/components/Body/SideBar/SideBar';
-import { client } from '@/libs/client'; // microCMSクライアントのパスを確認
-import CategoryList from '@/components/Body/Main/CategoryList';
+// src/app/category/[id]/page.tsx
 
 
-// microCMSから返されるブログ記事の型定義
-// (他のファイルで定義済みの場合は import してもOK)
-interface Blog {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  title: string;
-  thumbnail: {
-    url: string
-  }
-  // 他に必要なプロパティがあれば追加
-  category?: string; // カテゴリー情報も含まれる場合 (任意)
+import SideBar from '@/components/Body/SideBar/SideBar'
+import CategoryList from '@/components/Body/Main/CategoryList'
+import Pagination from '@/components/Body/Main/Pagination'
+import { client } from '@/libs/client'
+import { notFound } from 'next/navigation'
+import type { Blog } from '@/types/blog'
+
+interface PageProps {
+  params: { id: string }
+  searchParams: { page?: string }
 }
 
-// microCMSから返されるカテゴリーの型定義
-// (他のファイルで定義済みの場合は import してもOK)
-// interface Category {
-//   id: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   publishedAt: string;
-//   revisedAt: string;
-//   name: string;
-//   // 他に必要なプロパティがあれば追加
-// }
+export const revalidate = 60
+const PER_PAGE = 5
 
-// Propsの型定義 (URLパラメータ)
-interface CategoryPageProps {
-  params: {
-    id: string; // [id]部分が string として渡される
-  };
-}
+const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
+  const categoryId = params.id
+  const currentPage = parseInt(searchParams.page ?? '1', 10) || 1
+  if (currentPage < 1) return notFound()
 
+  const offset = (currentPage - 1) * PER_PAGE
 
-
-// 静的生成のためのパスを生成 (旧 getStaticPaths)
-// export const generateStaticParams = async () => {
-//   try {
-//     console.log("Generating static params for categories...");
-//     const data = await client.get<{ contents: Category[] }>({ endpoint: "category" }); // 型を指定
-//     console.log("Fetched categories for static params:", data.contents.length);
-
-//     const paths = data.contents.map((content) => ({
-//       id: content.id, // オブジェクトのキーをパラメータ名 'id' に合わせる
-//     }));
-//     console.log("Generated paths:", paths);
-//     return paths;
-
-//   } catch (error) {
-//     console.error("Error fetching categories for static params:", error);
-//     return []; // エラー時は空配列を返す
-//   }
-// };
-
-
-// カテゴリー別ブログ一覧ページコンポーネント (Server Component)
-const CategoryIdPage = async ({ params }: CategoryPageProps) => {
-  const categoryId = params.id;
-
-
-  // 特定カテゴリーのブログ記事を取得
-  let blog: Blog[] = [];
+  // microCMSからフィルタ＋ページネーション付きで取得
+  let blogs: Blog[] = []
+  let totalCount = 0
   try {
-    console.log(`Workspaceing blog data for category: ${categoryId}`);
-    const data = await client.get<{ contents: Blog[] }>({ // 型を指定
-      endpoint: "blog",
-      queries: { filters: `category[equals]${categoryId}` },
-    });
-    blog = data.contents;
-    console.log(`Workspaceed ${blog.length} blog posts for category ${categoryId}`);
-  } catch (error) {
-    console.error(`Error fetching blog data for category ${categoryId}:`, error);
-    // エラーが発生した場合、blog は初期値の空配列のままになる
-    // 必要に応じてエラーページを表示するなどの処理を追加できます
-    // 例:notFound(); // Next.js 13.4 以降の機能
+    const { contents, totalCount: tc } = await client.get<{
+      contents: Blog[]
+      totalCount: number
+    }>({
+      endpoint: 'blog',
+      queries: {
+        filters: `category[equals]${categoryId}`,
+        limit: PER_PAGE,
+        offset,
+        fields: 'id,title,publishedAt,thumbnail,category',
+      },
+    })
+    blogs = contents
+    totalCount = tc
+  } catch (e) {
+    console.error(e)
+    return <div>記事の取得に失敗しました。</div>
   }
 
-
-  // カテゴリーに紐付いたコンテンツがない場合に表示
-  if (blog.length === 0) {
-    // データ取得エラーの場合もここに来る可能性がある
-    console.log(`No blog content found for category: ${categoryId}`)
+  if (blogs.length === 0) {
     return <div>このカテゴリーのブログ記事はありません。</div>
   }
 
-  // ブログ記事一覧を表示
   return (
-    <div className='flex flex-col lg:flex-row py-10 sm:px-4 md:px-24'>
-      <CategoryList blog={blog} />
-      <SideBar />
+    <div>
+      <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">
+        <CategoryList blogs={blogs} categoryId={categoryId} />
+        <SideBar />
+      </div>
+      <Pagination
+        totalCount={totalCount}
+        currentPage={currentPage}
+        basePath={`/category/${categoryId}`}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default CategoryIdPage;
-
-// データ再生成の設定 (任意)
-// export const revalidate = 60; // 例: 60秒ごとに再生成
+export default CategoryPage

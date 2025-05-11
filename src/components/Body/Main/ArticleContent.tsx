@@ -29,7 +29,7 @@ const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
         </div>
       )}
       {/* パンくず */}
-      <LocationOfPage category={post.category} />
+      <LocationOfPage category={post.category} page='ホーム' />
 
       {/* タイトル */}
       <h1 className="text-3xl font-bold mb-4 text-gray-800  sm:w-full">

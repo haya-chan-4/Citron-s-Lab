@@ -36,7 +36,7 @@ const SideBar: React.FC<Props> = async () => {
     <aside className="hidden xl:block w-80 space-y-6">
       {/* カテゴリー一覧 */}
       <section className="bg-white p-4 ">
-        <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">カテゴリ</h2>
+        <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">カテゴリー</h2>
         <ul className="space-y-0 divide-y divide-gray-200 text-gray-700">
           {categories.map((blog) => (
             <CategoryItem

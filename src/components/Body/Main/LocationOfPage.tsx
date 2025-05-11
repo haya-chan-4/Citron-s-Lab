@@ -3,17 +3,18 @@ import Link from "next/link";
 
 interface LocationOfPageProps {
   category: string
+  page: string
 }
 
 const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
-  const { category } = props
+  const { category, page } = props
   return (
-    <nav className="text-gray-500 mb-4 text-base">
+    <nav className="text-gray-500 mb-4 font-bold">
       <Link href="/" className="hover:underline">
-        ホーム
+        {page}
       </Link>
       <span className="mx-2">{'>'}</span>
-      <Link href={`/category/${category}`} className="text-gray-700 hover:underline">
+      <Link href={`/category/${category}`} className="text-indigo-700 hover:underline">
         {category}
       </Link>
     </nav>
