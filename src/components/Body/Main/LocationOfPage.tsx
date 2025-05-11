@@ -9,7 +9,7 @@ interface LocationOfPageProps {
 const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
   const { category, page } = props
   return (
-    <nav className="text-gray-500 mb-4 font-bold">
+    <nav className="text-gray-500 text-md font-bold mb-8">
       <Link href="/" className="hover:underline">
         {page}
       </Link>
