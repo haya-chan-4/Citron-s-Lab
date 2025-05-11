@@ -1,6 +1,4 @@
 // src/app/category/[id]/page.tsx
-
-
 import SideBar from '@/components/Body/SideBar/SideBar'
 import CategoryList from '@/components/Body/Main/CategoryList'
 import Pagination from '@/components/Body/Main/Pagination'

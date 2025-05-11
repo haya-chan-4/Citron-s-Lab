@@ -1,9 +1,9 @@
 "use client";
 import Image from 'next/image'
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import Spinner from './Spinner';
-import { Search } from 'lucide-react';
+
 
 interface Props {
   title: string;
@@ -11,9 +11,6 @@ interface Props {
 
 const Header = (props: Props): JSX.Element => {
   const { title } = props;
-  // const [isSearchOpen, setIsSearchOpen] = useState(true);
-
-  // const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   return (
     <Suspense fallback={<Spinner />}>
