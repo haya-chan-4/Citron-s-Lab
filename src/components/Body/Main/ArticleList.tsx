@@ -6,7 +6,8 @@ interface Props {
   blogs: Blog[]
 }
 
-export default function ArticleList({ blogs }: Props) {
+const ArticleList = (props: Props) => {
+  const { blogs } = props
   return (
     <main className="max-w-4xl mx-auto px-4 py-9 w-full">
       <div className="flex-1 mx-4">
@@ -29,3 +30,4 @@ export default function ArticleList({ blogs }: Props) {
     </main>
   )
 }
+export default ArticleList
