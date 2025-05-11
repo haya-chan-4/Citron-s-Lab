@@ -7,7 +7,7 @@ const Footer = () => {
         {/* サイト名称 */}
         <div>
           {/* <h3 className="text-xl font-semibold text-white mb-3">INFJ&apos;s Lab</h3> */}
-          <p className="text-sm">&copy; {new Date().getFullYear()} INFJ&apos;s Lab All rights reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} Citron&apos;s Lab All rights reserved.</p>
         </div>
 
         {/* ナビゲーション */}

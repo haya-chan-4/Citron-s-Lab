@@ -14,7 +14,7 @@ const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
         {page}
       </Link>
       <span className="mx-2">{'>'}</span>
-      <Link href={`/category/${category}`} className="text-indigo-700 hover:underline">
+      <Link href={`/category/${category}`} className="text-indigo-500 hover:underline">
         {category}
       </Link>
     </nav>
