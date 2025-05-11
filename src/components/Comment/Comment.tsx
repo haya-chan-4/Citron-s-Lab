@@ -54,8 +54,8 @@ const Comment = ({ blogId }: CommentProps) => {
     if (!body.trim()) return alert('コメントを入力してください')
     try {
       await addDoc(collection(db, 'comments'), {
-        blogId,                  // ← ここで blogId を一緒に保存
-        name,
+        blogId,
+        name: name.trim() || '名無しさん', // 空ならデフォルト名
         body,
         date: serverTimestamp(),
       })

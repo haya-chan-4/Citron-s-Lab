@@ -5,7 +5,6 @@ import type { Blog } from '@/types/blog';
 
 export const revalidate = 60;
 
-
 const PER_PAGE = 3;
 
 // microCMS からページネーション用に記事＋総件数を取得
@@ -24,12 +23,13 @@ const getBlogs = async (offset = 0): Promise<{ blogs: Blog[]; totalCount: number
   return { blogs: data.contents, totalCount: data.totalCount };
 };
 
-const BlogPage = async (props: { currentPage: number; offset: number; }) => {
-  const {currentPage, offset} = props
-  // 1ページ目なので offset=0, currentPage=1
-  // const currentPage = 1;
-  // const offset = 0;
-
+const BlogPage = async ({
+  searchParams,
+}: {
+  searchParams?: { page?: string };
+}) => {
+  const currentPage = Number(searchParams?.page ?? '1');
+  const offset = (currentPage - 1) * PER_PAGE;
   const { blogs, totalCount } = await getBlogs(offset);
 
   return (
