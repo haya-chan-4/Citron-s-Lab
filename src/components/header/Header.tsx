@@ -11,9 +11,9 @@ interface Props {
 
 const Header = (props: Props): JSX.Element => {
   const { title } = props;
-  const [isSearchOpen, setIsSearchOpen] = useState(true);
+  // const [isSearchOpen, setIsSearchOpen] = useState(true);
 
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+  // const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   return (
     <Suspense fallback={<Spinner />}>
