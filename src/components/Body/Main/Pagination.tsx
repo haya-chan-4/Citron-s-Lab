@@ -7,7 +7,7 @@ interface Props {
   basePath: string      // 例: '/page'
 }
 
-const PER_PAGE = 3
+const PER_PAGE = 10
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (_, i) => start + i)
 

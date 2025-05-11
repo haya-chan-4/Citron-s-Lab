@@ -12,7 +12,7 @@ interface PageProps {
 }
 
 export const revalidate = 60
-const PER_PAGE = 5
+const PER_PAGE = 10
 
 const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
   const categoryId = params.id

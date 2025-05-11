@@ -4,7 +4,7 @@ import { client } from '@/libs/client'
 import type { Blog } from '@/types/blog'
 import { notFound } from 'next/navigation'
 
-const PER_PAGE = 3
+const PER_PAGE = 10
 
 async function getBlogs(offset: number) {
   const data = await client.get<{
