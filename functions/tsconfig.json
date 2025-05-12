@@ -1,0 +1,23 @@
+
+
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
+    // "lib": ["es2017"] または ["es2017", "dom"] は、必要であれば追加を検討
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ],
+  "exclude": [ // この部分を追加または修正
+    "node_modules",
+    "../node_modules", // Functions ディレクトリの親にある node_modules を除外
+    "**/*.spec.ts" // テストファイルを除外する場合（必要に応じて）
+  ]
+}
