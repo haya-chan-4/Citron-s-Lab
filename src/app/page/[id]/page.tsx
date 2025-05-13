@@ -2,21 +2,19 @@
 import MainContent from '@/components/Body/Main/MainContent'
 import type { Blog } from '@/types/blog'
 import { notFound } from 'next/navigation'
-import { PER_PAGE } from '@/constants/pagination'
 import { getPaginatedBlogs } from '@/libs/api'
+import { getPaginationParams } from '@/utils/pagination'
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const currentPage = parseInt(params.id, 10);
-  if (isNaN(currentPage) || currentPage < 1) return notFound();
+  const { currentPage, offset } = getPaginationParams({ pageParam: params.id })
 
-  const offset = (currentPage - 1) * PER_PAGE
+  if (isNaN(currentPage) || currentPage < 1) return notFound()
 
   let blogs: Blog[];
   let totalCount: number;
   try {
-    // 共通関数を使用
     const res = await getPaginatedBlogs({ endpoint: 'blog', offset });
-    blogs = res.blogs;
+    blogs = res.blogs; // getPaginatedBlogs の返り値に合わせて修正
     totalCount = res.totalCount;
   } catch (e) {
     console.error(e);

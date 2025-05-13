@@ -2,11 +2,10 @@
 import ArticleSidebarLayout from '@/components/Layouts/ArticleSidebarLayout'
 import CategoryList from '@/components/Body/Main/CategoryList'
 import Pagination from '@/components/Body/Main/Pagination'
-import { client } from '@/libs/client'
 import { notFound } from 'next/navigation'
 import type { Blog } from '@/types/blog'
-import { PER_PAGE } from '@/constants/pagination'
 import { getPaginatedBlogs } from '@/libs/api'
+import { getPaginationParams } from '@/utils/pagination'
 
 interface PageProps {
   params: { id: string }
@@ -17,10 +16,10 @@ export const revalidate = 60
 
 const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
   const categoryId = params.id
-  const currentPage = parseInt(searchParams.page ?? '1', 10) || 1
-  if (currentPage < 1) return notFound()
-
-  const offset = (currentPage - 1) * PER_PAGE
+  const { currentPage, offset } = getPaginationParams({ pageParam: searchParams.page });
+  if (isNaN(currentPage) || currentPage < 1) {
+    return notFound();
+  }
 
   // microCMSからフィルタ＋ページネーション付きで取得
   let blogs: Blog[] = []
@@ -38,11 +37,12 @@ const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
     return <div>記事の取得に失敗しました。</div>
   }
 
+  if (blogs.length === 0 && totalCount > 0) {
+    return notFound()
+  }
   if (blogs.length === 0) {
     return <div>このカテゴリーのブログ記事はありません。</div>
   }
-
-
   return (
     <div>
       <ArticleSidebarLayout
