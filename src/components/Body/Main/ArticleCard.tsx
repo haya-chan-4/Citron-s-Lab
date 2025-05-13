@@ -21,8 +21,6 @@ interface ArticleCardProps {
 
 const ArticleCard = (props: ArticleCardProps): JSX.Element => {
   const { blog } = props
-  // const pathname = usePathname()
-  // const currentPathname = pathname
   const articleLinkHref = `/blog/${blog.id}`
 
   return (
@@ -32,11 +30,12 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
     >
       <div className="flex flex-col sm:flex-row  w-full ">
         <div className="m-0 p-0 relative sm:w-72 lg:h-full lg:min-h-40 flex-shrink-0 w-full h-52">
-          <Image
+        <Image
             src={blog.thumbnail.url}
             fill
             className="object-cover"
             alt="サムネ画像"
+            sizes="(max-width: 600px) 100vw, (max-width: 1024px) 72px, 33vw"
           />
         </div>
         <div className="grid grid-cols-1 w-full">

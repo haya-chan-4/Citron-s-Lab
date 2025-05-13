@@ -16,15 +16,16 @@ interface ArticleContentProps {
 const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
   return (
     <article className="flex-1 w-full max-w-[820px] px-4 xl:px-0 ">
-
       {/* アイキャッチ画像 */}
       {post.thumbnail?.url && (
-        <div className="relative aspect-video mb-6 rounded-md overflow-hidden shadow-sm max-w-[800px]">
+        <div className="relative aspect-video mb-6 rounded-md overflow-hidden shadow-sm max-w-[760px]">
           <Image
             src={post.thumbnail.url}
             alt={post.title}
             className="object-cover"
             fill
+            priority
+            sizes="(max-width: 760px) 100vw, 800px"
           />
         </div>
       )}
