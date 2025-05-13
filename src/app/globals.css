@@ -28,3 +28,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.card-base {
+  @apply border rounded-md shadow-sm hover:shadow-lg transition-shadow bg-white overflow-hidden;
+}
+
+.category-tag {
+  @apply w-max h-min text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px];
+}
