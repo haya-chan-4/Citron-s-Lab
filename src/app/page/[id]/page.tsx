@@ -3,8 +3,9 @@ import MainContent from '@/components/Body/Main/MainContent'
 import { client } from '@/libs/client'
 import type { Blog } from '@/types/blog'
 import { notFound } from 'next/navigation'
+import { PER_PAGE } from '@/constants/pagination'
 
-const PER_PAGE = 10
+const perPage = PER_PAGE
 
 async function getBlogs(offset: number) {
   const data = await client.get<{
@@ -13,7 +14,7 @@ async function getBlogs(offset: number) {
   }>({
     endpoint: 'blog',
     queries: {
-      limit: PER_PAGE,
+      limit: perPage,
       offset,
       fields: 'id,title,publishedAt,thumbnail,category',
     },
@@ -25,7 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const currentPage = parseInt(params.id, 10)
   if (isNaN(currentPage) || currentPage < 1) return notFound()
 
-  const offset = (currentPage - 1) * PER_PAGE
+  const offset = (currentPage - 1) * perPage
 
   let blogs: Blog[]
   let totalCount: number

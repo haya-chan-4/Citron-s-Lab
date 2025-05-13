@@ -5,6 +5,7 @@ import Pagination from '@/components/Body/Main/Pagination'
 import { client } from '@/libs/client'
 import { notFound } from 'next/navigation'
 import type { Blog } from '@/types/blog'
+import { PER_PAGE} from '@/constants/pagination'
 
 interface PageProps {
   params: { id: string }
@@ -12,14 +13,14 @@ interface PageProps {
 }
 
 export const revalidate = 60
-const PER_PAGE = 10
+const perPage = PER_PAGE
 
 const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
   const categoryId = params.id
   const currentPage = parseInt(searchParams.page ?? '1', 10) || 1
   if (currentPage < 1) return notFound()
 
-  const offset = (currentPage - 1) * PER_PAGE
+  const offset = (currentPage - 1) * perPage
 
   // microCMSからフィルタ＋ページネーション付きで取得
   let blogs: Blog[] = []
@@ -32,7 +33,7 @@ const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
       endpoint: 'blog',
       queries: {
         filters: `category[equals]${categoryId}`,
-        limit: PER_PAGE,
+        limit: perPage,
         offset,
         fields: 'id,title,publishedAt,thumbnail,category',
       },
