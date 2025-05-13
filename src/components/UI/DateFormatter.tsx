@@ -1,6 +1,6 @@
 // src/components/UI/DateFormatter.tsx
 interface Props {
-  dateString: Date;
+  dateString: string;
 }
 
 const DateFormatter: React.FC<Props> = ({ dateString }) => {
