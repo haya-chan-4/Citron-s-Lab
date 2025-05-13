@@ -4,13 +4,13 @@ import ArticleList from './ArticleList'
 import Pagination from './Pagination'
 import type { Blog } from '@/types/blog'
 
-interface Props {
+interface MainContentProps {
   blogs: Blog[]
   totalCount: number
   currentPage: number
 }
 
-const MainContent = ({ blogs, totalCount, currentPage }: Props) => {
+const MainContent = ({ blogs, totalCount, currentPage }: MainContentProps) => {
   return (
     <div>
       <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">
