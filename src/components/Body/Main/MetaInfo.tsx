@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { Clock4 } from 'lucide-react';
+import { formatCategoryName } from '@/utils/format'
 import Link from 'next/link';
+
 
 interface MetaInfoProps {
   publishedAt: string;
@@ -18,7 +20,7 @@ const MetaInfo: React.FC<MetaInfoProps> = (props) => {
       </span>
       {category && (
         <Link href={`/category/${category}`} className="text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] ">
-          {category}
+          {formatCategoryName(category)}
         </Link>
       )}
     </div>

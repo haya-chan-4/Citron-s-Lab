@@ -48,6 +48,7 @@ const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
     return <div>このカテゴリーのブログ記事はありません。</div>
   }
 
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">

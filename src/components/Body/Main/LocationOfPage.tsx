@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatCategoryName } from '@/utils/format'
 
 
 interface LocationOfPageProps {
@@ -8,6 +9,8 @@ interface LocationOfPageProps {
 
 const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
   const { category, page } = props
+
+
   return (
     <nav className="text-gray-500 text-md font-bold mb-8">
       <Link href="/" className="hover:underline">
@@ -15,7 +18,7 @@ const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
       </Link>
       <span className="mx-2">{'>'}</span>
       <Link href={`/category/${category}`} className="text-indigo-500 hover:underline">
-        {category}
+        {formatCategoryName(category)}
       </Link>
     </nav>
   )
