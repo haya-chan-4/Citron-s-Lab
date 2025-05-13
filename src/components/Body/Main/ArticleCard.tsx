@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Clock4 } from 'lucide-react';
 import React from 'react';
 import { formatCategoryName } from '@/utils/format'
+import DateFormatter from '@/components/UI/DateFormatter'
 
 interface ArticleCardProps {
   blog: {
@@ -52,7 +53,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
             </span>
             <time className="text-base text-gray-600 flex items-center">
               <Clock4 className="mr-2 size-4 text-gray-500" />
-              {new Date(blog.publishedAt ?? '').toLocaleDateString()}
+              <DateFormatter dateString={new Date} />
             </time>
           </div>
         </div>

@@ -1,5 +1,5 @@
 // src/app/category/[id]/page.tsx
-import SideBar from '@/components/Body/SideBar/SideBar'
+import ArticleSidebarLayout from '@/components/Layouts/ArticleSidebarLayout';
 import CategoryList from '@/components/Body/Main/CategoryList'
 import Pagination from '@/components/Body/Main/Pagination'
 import { client } from '@/libs/client'
@@ -51,10 +51,9 @@ const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">
-        <CategoryList blogs={blogs} categoryId={categoryId} />
-        <SideBar />
-      </div>
+      <ArticleSidebarLayout
+        articleArea={<CategoryList blogs={blogs} categoryId={categoryId} />}
+      />
       <Pagination
         totalCount={totalCount}
         currentPage={currentPage}
