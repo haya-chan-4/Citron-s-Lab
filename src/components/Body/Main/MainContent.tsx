@@ -1,4 +1,4 @@
-// src/components/Body/Main/MainContent.tsx (修正後イメージ)
+// src/components/Body/Main/MainContent.tsx
 import ArticleSidebarLayout from '@/components/Layouts/ArticleSidebarLayout';
 import ArticleList from './ArticleList';
 import Pagination from './Pagination';

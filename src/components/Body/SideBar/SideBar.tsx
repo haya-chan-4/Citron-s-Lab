@@ -1,3 +1,4 @@
+// src/components/Body/SideBar/SideBar.tsx
 import { client } from "@/libs/client";
 import { Blog } from "@/types/blog";
 import LatestCard from "./LatestCard";

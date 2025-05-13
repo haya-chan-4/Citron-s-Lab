@@ -1,3 +1,4 @@
+// src/components/Body/Main/ArticleContent.tsx
 import Image from 'next/image';
 import LocationOfPage from '@/components/Body/Main/LocationOfPage';
 import MetaInfo from '@/components/Body/Main/MetaInfo';

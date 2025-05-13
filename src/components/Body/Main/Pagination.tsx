@@ -1,3 +1,4 @@
+// src/components/Body/Main/Pagination.tsx
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { PER_PAGE } from '@/constants/pagination'
