@@ -1,20 +1,11 @@
 // src/components/Body/Main/CategoryList.tsx
 import ArticleCard from '@/components/Body/Main/ArticleCard'
-import LocationOfPage from './LocationOfPage';
-
-export interface Blog {
-  id: string;
-  category?: string;
-  title: string;
-  publishedAt: string;
-  thumbnail: {
-    url: string;
-  };
-}
+import LocationOfPage from './LocationOfPage'
+import type { Blog } from '@/types/blog'
 
 export interface CategoryListProps {
-  blogs: Blog[];
-  categoryId: string;
+  blogs: Blog[]
+  categoryId: string
 }
 
 const CategoryList: React.FC<CategoryListProps> = ({ blogs, categoryId }) => (
