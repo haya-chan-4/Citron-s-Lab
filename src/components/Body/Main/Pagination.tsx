@@ -8,7 +8,6 @@ interface Props {
   basePath: string      // 例: '/page'
 }
 
-const perPage = PER_PAGE
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (_, i) => start + i)
 
@@ -20,7 +19,7 @@ const Pagination = ({
   // ① currentPage が undefined や NaN のときは 1 にフォールバック
   const cp = typeof currentPage === 'number' && !isNaN(currentPage) ? currentPage : 1
 
-  const pageCount = Math.ceil(totalCount / perPage)
+  const pageCount = Math.ceil(totalCount / PER_PAGE)
   const pages = range(1, pageCount)
 
   // ② 1ページ目だけホーム（"/"）に飛ばす

@@ -1,11 +1,12 @@
 // src/app/category/[id]/page.tsx
-import ArticleSidebarLayout from '@/components/Layouts/ArticleSidebarLayout';
+import ArticleSidebarLayout from '@/components/Layouts/ArticleSidebarLayout'
 import CategoryList from '@/components/Body/Main/CategoryList'
 import Pagination from '@/components/Body/Main/Pagination'
 import { client } from '@/libs/client'
 import { notFound } from 'next/navigation'
 import type { Blog } from '@/types/blog'
-import { PER_PAGE} from '@/constants/pagination'
+import { PER_PAGE } from '@/constants/pagination'
+import { getPaginatedBlogs } from '@/libs/api'
 
 interface PageProps {
   params: { id: string }
@@ -13,33 +14,25 @@ interface PageProps {
 }
 
 export const revalidate = 60
-const perPage = PER_PAGE
 
 const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
   const categoryId = params.id
   const currentPage = parseInt(searchParams.page ?? '1', 10) || 1
   if (currentPage < 1) return notFound()
 
-  const offset = (currentPage - 1) * perPage
+  const offset = (currentPage - 1) * PER_PAGE
 
   // microCMSからフィルタ＋ページネーション付きで取得
   let blogs: Blog[] = []
   let totalCount = 0
   try {
-    const { contents, totalCount: tc } = await client.get<{
-      contents: Blog[]
-      totalCount: number
-    }>({
+    const res = await getPaginatedBlogs({
       endpoint: 'blog',
-      queries: {
-        filters: `category[equals]${categoryId}`,
-        limit: perPage,
-        offset,
-        fields: 'id,title,publishedAt,thumbnail,category',
-      },
+      offset,
+      queries: { filters: `category[equals]${categoryId}` },
     })
-    blogs = contents
-    totalCount = tc
+    blogs = res.blogs
+    totalCount = res.totalCount
   } catch (e) {
     console.error(e)
     return <div>記事の取得に失敗しました。</div>

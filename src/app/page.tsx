@@ -2,15 +2,14 @@
 import MainContent from '@/components/Body/Main/MainContent';
 import { client } from '@/libs/client';
 import type { Blog } from '@/types/blog';
+import { PER_PAGE } from '@/constants/pagination';
 
-export const revalidate = 60;
-
-const PER_PAGE = 10
+export const revalidate = 60
 
 // microCMS からページネーション用に記事＋総件数を取得
 const getBlogs = async (offset = 0): Promise<{ blogs: Blog[]; totalCount: number }> => {
   const data = await client.get<{
-    contents: Blog[];
+    contents: Blog[]
     totalCount: number;
   }>({
     endpoint: 'blog',
