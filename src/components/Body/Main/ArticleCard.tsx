@@ -1,11 +1,12 @@
+// src/components/Body/Main/ArticleCard.tsx
 'use client';
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Clock4 } from 'lucide-react';
-import React from 'react';
-import { formatCategoryName } from '@/utils/format'
 import DateFormatter from '@/components/UI/DateFormatter'
+import CategoryDisplay from '@/components/UI/CategoryDisplay';
 
 interface ArticleCardProps {
   blog: {
@@ -28,7 +29,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
     <Link
       key={blog.id}
       href={
-        currentPathname.startsWith('/blog/[id]')
+        currentPathname.startsWith('/blog/[id]') // ★ この判定が問題
           ? `/${blog.id}` // 現在閲覧中のカテゴリページの場合、IDのみ
           : `/blog/${blog.id}` // それ以外の場合、/blog/ID
       }
@@ -48,12 +49,10 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
             {blog.title}
           </h2>
           <div className='grid text-lg text-gray-700 px-5 pb-4'>
-            <span className="w-max h-min grid-item col-span-1 text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] mb-2">
-              {formatCategoryName(blog.category)}
-            </span>
+            {blog.category && <CategoryDisplay categoryId={blog.category} styleType="tag" />}
             <time className="text-base text-gray-600 flex items-center">
               <Clock4 className="mr-2 size-4 text-gray-500" />
-              <DateFormatter dateString={new Date} />
+              {blog.publishedAt && <DateFormatter dateString={blog.publishedAt} />}
             </time>
           </div>
         </div>

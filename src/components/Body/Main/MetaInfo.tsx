@@ -1,7 +1,7 @@
+// src/components/Body/Main/MetaInfo.tsx
 import dayjs from 'dayjs';
-import { Clock4 } from 'lucide-react';
-import { formatCategoryName } from '@/utils/format'
-import Link from 'next/link';
+import { Clock4 } from 'lucide-react'
+import CategoryDisplay from '@/components/UI/CategoryDisplay';
 
 
 interface MetaInfoProps {
@@ -19,9 +19,7 @@ const MetaInfo: React.FC<MetaInfoProps> = (props) => {
         {formattedDate}
       </span>
       {category && (
-        <Link href={`/category/${category}`} className="text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px] ">
-          {formatCategoryName(category)}
-        </Link>
+        <CategoryDisplay categoryId={category} styleType="tag" />
       )}
     </div>
   );
