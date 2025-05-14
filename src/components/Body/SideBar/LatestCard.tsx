@@ -1,10 +1,8 @@
 // src/components/Body/SideBar/LatestCard.tsx
-'use client';
+'use client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-
-
 
 interface Props {
   blog: {
@@ -13,12 +11,12 @@ interface Props {
       url: string
     }
     title: string
-    publishedAt?: string;
+    publishedAt?: string
   }
 }
 
 const LatestCard: React.FC<Props> = (props) => {
-  const { blog } = props;
+  const { blog } = props
   const pathname = usePathname()
   const currentPathname = pathname
 
@@ -43,7 +41,9 @@ const LatestCard: React.FC<Props> = (props) => {
           />
         </div>
         <div className="flex-1">
-          <p className="text-sm justify-start flex items-start font-semibold text-gray-600 py-4">{blog.title}</p>
+          <p className="text-sm justify-start flex items-start font-semibold text-gray-600 py-4">
+            {blog.title}
+          </p>
         </div>
       </div>
     </Link>

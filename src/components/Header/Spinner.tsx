@@ -6,5 +6,5 @@ export default function Spinner() {
     >
       <div className="border-gray h-8 w-8 animate-spin rounded-xl bg-white"></div>
     </div>
-  );
+  )
 }

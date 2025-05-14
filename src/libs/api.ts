@@ -1,17 +1,17 @@
 // src/libs/api.ts (例: microCMSクライアントの近く)
-import { client } from './client'; // microCMSクライアントのパス
-import type { Blog } from '@/types/blog';
-import { PER_PAGE } from '@/constants/pagination'; // PER_PAGEをインポート
+import { client } from './client' // microCMSクライアントのパス
+import type { Blog } from '@/types/blog'
+import { PER_PAGE } from '@/constants/pagination' // PER_PAGEをインポート
 
 interface GetPaginatedBlogsParams {
-  endpoint: 'blog'; // 他のエンドポイントが必要なら追加
-  limit?: number;
-  offset?: number;
+  endpoint: 'blog' // 他のエンドポイントが必要なら追加
+  limit?: number
+  offset?: number
   queries?: {
-    filters?: string;
-    [key: string]: unknown; // その他のクエリパラメータ
-  };
-  fields?: string;
+    filters?: string
+    [key: string]: unknown // その他のクエリパラメータ
+  }
+  fields?: string
 }
 
 export async function getPaginatedBlogs({
@@ -22,8 +22,8 @@ export async function getPaginatedBlogs({
   fields = 'id,title,publishedAt,thumbnail,category', // デフォルトのフィールド
 }: GetPaginatedBlogsParams) {
   const data = await client.get<{
-    contents: Blog[];
-    totalCount: number;
+    contents: Blog[]
+    totalCount: number
   }>({
     endpoint,
     queries: {
@@ -32,6 +32,6 @@ export async function getPaginatedBlogs({
       fields,
       ...queries, // 追加のクエリ（filtersなど）をマージ
     },
-  });
-  return { blogs: data.contents, totalCount: data.totalCount };
+  })
+  return { blogs: data.contents, totalCount: data.totalCount }
 }

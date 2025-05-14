@@ -1,16 +1,16 @@
 // src/components/Body/Main/ArticleContent.tsx
-import Image from 'next/image';
-import LocationOfPage from '@/components/Body/Main/LocationOfPage';
-import MetaInfo from '@/components/Body/Main/MetaInfo';
+import Image from 'next/image'
+import LocationOfPage from '@/components/Body/Main/LocationOfPage'
+import MetaInfo from '@/components/Body/Main/MetaInfo'
 
 interface ArticleContentProps {
   post: {
-    category: string;
-    thumbnail?: { url: string };
-    title: string;
-    publishedAt: string;
-    body: string;
-  };
+    category: string
+    thumbnail?: { url: string }
+    title: string
+    publishedAt: string
+    body: string
+  }
 }
 
 const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
@@ -30,7 +30,7 @@ const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
         </div>
       )}
       {/* パンくず */}
-      <LocationOfPage category={post.category} page='ホーム' />
+      <LocationOfPage category={post.category} page="ホーム" />
 
       {/* タイトル */}
       <h1 className="text-3xl font-bold mb-4 text-gray-800  sm:w-full">
@@ -47,7 +47,7 @@ const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
       {/* コメント */}
       {/* <Comment /> */}
     </article>
-  );
-};
+  )
+}
 
-export default ArticleContent;
+export default ArticleContent

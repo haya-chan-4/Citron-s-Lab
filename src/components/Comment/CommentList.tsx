@@ -3,7 +3,9 @@
 import CommentItem from '@/components/Comment/CommentItem'
 import type { Comment } from '@/hooks/useComments'
 
-interface Props { comments: Comment[] }
+interface Props {
+  comments: Comment[]
+}
 
 export const CommentList = ({ comments }: Props) => (
   <ul className="space-y-6 w-full">

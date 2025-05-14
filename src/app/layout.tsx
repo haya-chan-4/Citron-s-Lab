@@ -1,66 +1,64 @@
 // src/app/layout.tsx
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
-
+import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+import './globals.css'
+import Header from '@/components/Header/Header'
+import Footer from '@/components/Footer/Footer'
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+  weight: '100 900',
+})
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  weight: '100 900',
+})
 
 export const metadata: Metadata = {
-  title: "シトロンのサブカルラボ",
-  description: "シトロンのサブカルラボです。",
+  title: 'シトロンのサブカルラボ',
+  description: 'シトロンのサブカルラボです。',
   keywords: [
-    "アニメ",
-    "漫画",
-    "AI",
-    "X",
-    "TikTok",
-    "Blue Lock",
-    "ブルーロック",
-    "原神",
+    'アニメ',
+    '漫画',
+    'AI',
+    'X',
+    'TikTok',
+    'Blue Lock',
+    'ブルーロック',
+    '原神',
   ],
   openGraph: {
-    title: "シトロンのサブカルラボ",
-    description: "アニメ・漫画・AIなどを語るブログ",
+    title: 'シトロンのサブカルラボ',
+    description: 'アニメ・漫画・AIなどを語るブログ',
     // url: "https://your-domain.com",
-    siteName: "シトロンのサブカルラボ",
+    siteName: 'シトロンのサブカルラボ',
     images: [
       {
-        url: "/public/images/Citron.png", // publicフォルダに置く
+        url: '/public/images/Citron.png', // publicフォルダに置く
         width: 1200,
         height: 630,
-        alt: "シトロンのサブカルラボのアイコンです",
+        alt: 'シトロンのサブカルラボのアイコンです',
       },
     ],
-    type: "website",
+    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "シトロンのサブカルラボ",
-    description: "アニメ・漫画・AIなどを語るブログ",
-    images: ["/og-image.png"],
+    card: 'summary_large_image',
+    title: 'シトロンのサブカルラボ',
+    description: 'アニメ・漫画・AIなどを語るブログ',
+    images: ['/og-image.png'],
   },
   icons: {
-    icon: "/favicon.ico", // public フォルダに配置
+    icon: '/favicon.ico', // public フォルダに配置
   },
-};
-
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="jp">
@@ -72,5 +70,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  );
+  )
 }

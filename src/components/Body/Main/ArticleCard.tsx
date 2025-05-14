@@ -5,17 +5,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Clock4 } from 'lucide-react'
 import DateFormatter from '@/components/UI/DateFormatter'
-import CategoryDisplay from '@/components/UI/CategoryDisplay';
+import CategoryDisplay from '@/components/UI/CategoryDisplay'
 
 interface ArticleCardProps {
   blog: {
-    id: string;
-    category: string;
-    title: string;
-    publishedAt?: string;
+    id: string
+    category: string
+    title: string
+    publishedAt?: string
     thumbnail: {
-      url: string;
-    };
+      url: string
+    }
   }
 }
 
@@ -30,7 +30,7 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
     >
       <div className="flex flex-col sm:flex-row  w-full ">
         <div className="m-0 p-0 relative sm:w-72 lg:h-full lg:min-h-40 flex-shrink-0 w-full h-52">
-        <Image
+          <Image
             src={blog.thumbnail.url}
             fill
             className="object-cover"
@@ -42,11 +42,15 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
           <h2 className="grid-span-2 text-lg font-semibold text-gray-700 p-5 mg-8">
             {blog.title}
           </h2>
-          <div className='grid text-lg text-gray-700 px-5 pb-4'>
-            {blog.category && <CategoryDisplay categoryId={blog.category} styleType="tag" />}
+          <div className="grid text-lg text-gray-700 px-5 pb-4">
+            {blog.category && (
+              <CategoryDisplay categoryId={blog.category} styleType="tag" />
+            )}
             <time className="text-base text-gray-600 flex items-center">
               <Clock4 className="mr-2 size-4 text-gray-500" />
-              {blog.publishedAt && <DateFormatter dateString={blog.publishedAt} />}
+              {blog.publishedAt && (
+                <DateFormatter dateString={blog.publishedAt} />
+              )}
             </time>
           </div>
         </div>
@@ -55,4 +59,4 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
   )
 }
 
-export default React.memo(ArticleCard);
+export default React.memo(ArticleCard)

@@ -16,9 +16,11 @@ export const revalidate = 60
 
 const CategoryPage: React.FC<PageProps> = async ({ params, searchParams }) => {
   const categoryId = params.id
-  const { currentPage, offset } = getPaginationParams({ pageParam: searchParams.page });
+  const { currentPage, offset } = getPaginationParams({
+    pageParam: searchParams.page,
+  })
   if (isNaN(currentPage) || currentPage < 1) {
-    return notFound();
+    return notFound()
   }
 
   // microCMSからフィルタ＋ページネーション付きで取得

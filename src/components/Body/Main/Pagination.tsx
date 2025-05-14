@@ -5,20 +5,17 @@ import { PER_PAGE } from '@/constants/pagination'
 
 interface Props {
   totalCount: number
-  currentPage?: number  // オプショナルにする
-  basePath: string      // 例: '/page'
+  currentPage?: number // オプショナルにする
+  basePath: string // 例: '/page'
 }
 
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (_, i) => start + i)
 
-const Pagination = ({
-  totalCount,
-  currentPage,
-  basePath,
-}: Props) => {
+const Pagination = ({ totalCount, currentPage, basePath }: Props) => {
   // ① currentPage が undefined や NaN のときは 1 にフォールバック
-  const cp = typeof currentPage === 'number' && !isNaN(currentPage) ? currentPage : 1
+  const cp =
+    typeof currentPage === 'number' && !isNaN(currentPage) ? currentPage : 1
 
   const pageCount = Math.ceil(totalCount / PER_PAGE)
   const pages = range(1, pageCount)

@@ -1,12 +1,12 @@
 // src/components/Body/Main/MetaInfo.tsx
-import { Clock4 } from 'lucide-react';
+import { Clock4 } from 'lucide-react'
 import DateFormatter from '@/components/UI/DateFormatter'
 import CategoryDisplay from '@/components/UI/CategoryDisplay'
 import Link from 'next/link'
 
 interface MetaInfoProps {
-  publishedAt: string; // string 型を想定
-  category?: string;
+  publishedAt: string // string 型を想定
+  category?: string
 }
 
 const MetaInfo: React.FC<MetaInfoProps> = (props) => {
@@ -19,13 +19,16 @@ const MetaInfo: React.FC<MetaInfoProps> = (props) => {
       </span>
       {categoryId && (
         // Link タグで CategoryDisplay が返す要素 (span) をラップします
-        <Link href={`/category/${categoryId}`} className="category-tag"> {/* category-tag クラスを Link に適用 */}
-           {/* CategoryDisplay はテキストだけを含む span を返します */}
-           <CategoryDisplay categoryId={categoryId} styleType="plain" /> {/* plain スタイルを指定 */}
+        <Link href={`/category/${categoryId}`} className="category-tag">
+          {' '}
+          {/* category-tag クラスを Link に適用 */}
+          {/* CategoryDisplay はテキストだけを含む span を返します */}
+          <CategoryDisplay categoryId={categoryId} styleType="plain" />{' '}
+          {/* plain スタイルを指定 */}
         </Link>
       )}
     </div>
-  );
-};
+  )
+}
 
 export default MetaInfo

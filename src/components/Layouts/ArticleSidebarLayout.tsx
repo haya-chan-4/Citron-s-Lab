@@ -1,9 +1,9 @@
 // src/components/Layouts/ArticleSidebarLayout.tsx
-import React from 'react';
-import SideBar from '@/components/Body/SideBar/SideBar'; // SideBarのパスを調整
+import React from 'react'
+import SideBar from '@/components/Body/SideBar/SideBar' // SideBarのパスを調整
 
 interface Props {
-  articleArea: React.ReactNode; // 記事リストや記事詳細コンテンツ
+  articleArea: React.ReactNode // 記事リストや記事詳細コンテンツ
   // sidebarArea?: React.ReactNode; // 必要ならSideBarもPropsで渡す
 }
 
@@ -13,7 +13,7 @@ const ArticleSidebarLayout: React.FC<Props> = ({ articleArea }) => {
       {articleArea}
       <SideBar /> {/* SideBarをここで固定、またはPropsで渡す */}
     </div>
-  );
-};
+  )
+}
 
-export default ArticleSidebarLayout;
+export default ArticleSidebarLayout

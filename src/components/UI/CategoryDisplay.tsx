@@ -7,9 +7,13 @@ interface Props {
   className?: string
 }
 
-const CategoryDisplay: React.FC<Props> = ({ categoryId, styleType, className }) => {
+const CategoryDisplay: React.FC<Props> = ({
+  categoryId,
+  styleType,
+  className,
+}) => {
   if (!categoryId) {
-      return null
+    return null
   }
 
   const categoryName = formatCategoryName(categoryId)
@@ -25,7 +29,6 @@ const CategoryDisplay: React.FC<Props> = ({ categoryId, styleType, className }) 
       // プレーンなテキストを span で囲んで返します。
       return <span className={className || ''}>{categoryName}</span>
     default:
-
       return <span className={className || ''}></span>
   }
 }

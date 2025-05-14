@@ -1,5 +1,5 @@
 // src/components/Body/Main/LocationOfPage.tsx
-import Link from "next/link";
+import Link from 'next/link'
 import { formatCategoryName } from '@/utils/format'
 interface LocationOfPageProps {
   category: string
@@ -14,7 +14,10 @@ const LocationOfPage: React.FC<LocationOfPageProps> = (props): JSX.Element => {
         {page}
       </Link>
       <span className="mx-2">{'>'}</span>
-      <Link href={`/category/${category}`} className="text-indigo-500 hover:underline">
+      <Link
+        href={`/category/${category}`}
+        className="text-indigo-500 hover:underline"
+      >
         {formatCategoryName(category)}
       </Link>
     </nav>

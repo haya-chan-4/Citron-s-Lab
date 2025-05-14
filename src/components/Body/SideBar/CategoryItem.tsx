@@ -1,15 +1,11 @@
-import Link from 'next/link';
-
+import Link from 'next/link'
 
 interface Props {
   category: {
-    label: string;
-    value: string;
-  };
+    label: string
+    value: string
+  }
 }
-
-
-
 
 const CategoryItem: React.FC<Props> = ({ category }) => {
   return (
@@ -21,8 +17,7 @@ const CategoryItem: React.FC<Props> = ({ category }) => {
         {category.label}
       </Link>
     </li>
-  );
-};
-
+  )
+}
 
 export default CategoryItem

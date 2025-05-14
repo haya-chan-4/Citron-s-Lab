@@ -11,9 +11,7 @@ const CommentItem = ({ index, name, body, date }: Props) => (
       <p className="font-semibold text-gray-800">
         {index + 1}. {name}
       </p>
-      <time className="text-xs text-gray-400">
-        {date.toLocaleString()}
-      </time>
+      <time className="text-xs text-gray-400">{date.toLocaleString()}</time>
     </div>
     <p
       className="text-gray-700 leading-relaxed whitespace-pre-line"

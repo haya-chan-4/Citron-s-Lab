@@ -7,7 +7,6 @@ import { db } from '@/libs/firebase'
 
 type Props = { blogId: string }
 
-
 export const CommentForm = ({ blogId }: Props) => {
   const [name, setName] = useState('名無しさん')
   const [body, setBody] = useState('')
@@ -23,7 +22,6 @@ export const CommentForm = ({ blogId }: Props) => {
         date: serverTimestamp(),
       })
       setBody('')
-
     } catch {
       alert('コメントを投稿できませんでした')
     }
@@ -35,13 +33,13 @@ export const CommentForm = ({ blogId }: Props) => {
         type="text"
         placeholder="お名前"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
         className="w-full border px-3 py-2 rounded"
       />
       <textarea
         placeholder="コメント"
         value={body}
-        onChange={e => setBody(e.target.value)}
+        onChange={(e) => setBody(e.target.value)}
         className="w-full border px-3 py-2 rounded h-64"
       />
       <button
