@@ -1,9 +1,9 @@
 // src/components/Body/Main/ArticleCard.tsx
-'use client';
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Clock4 } from 'lucide-react';
+import { Clock4 } from 'lucide-react'
 import DateFormatter from '@/components/UI/DateFormatter'
 import CategoryDisplay from '@/components/UI/CategoryDisplay';
 
