@@ -1,118 +1,24 @@
-// components/Comments.tsx
+// components/comments/Comments.tsx
 'use client'
-import { useState, useEffect } from 'react'
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  addDoc,
-  serverTimestamp,
-  Timestamp,
-} from 'firebase/firestore'
-import { db } from '@/libs/firebase'
-import { linkifyText } from '@/utils/format'; // 作成した関数をインポート
+import { useState } from 'react'
+import { useComments } from '../../hooks/useComments'
+import { CommentList } from './CommentList'
+import { CommentForm } from './CommentForm'
 
-interface CommentProps {
-  blogId: string
-}
+interface Props { blogId: string }
 
-const Comment = ({ blogId }: CommentProps) => {
-  const [name, setName] = useState('名無しさん')
-  const [body, setBody] = useState('')
-  const [comments, setComments] = useState<
-    Array<{ id: string; name: string; body: string; date: Date }>
-  >([])
+export default function Comments({ blogId }: Props) {
+  const comments = useComments(blogId)
+  const [count, setCount] = useState(comments.length)
 
-  useEffect(() => {
-    // blogId でフィルタリングして、昇順ソート（投稿順）
-    const q = query(
-      collection(db, 'comments'),
-      where('blogId', '==', blogId),
-      orderBy('date', 'asc')
-    )
-    const unSub = onSnapshot(q, (snapshot) => {
-      setComments(
-        snapshot.docs.map((doc) => {
-          const data = doc.data()
-          const rawDate = data.date as Timestamp | null
-          const date = rawDate?.toDate() ?? new Date()
-          return {
-            id: doc.id,
-            name: data.name,
-            body: data.body,
-            date,
-          }
-        })
-      )
-    })
-    return () => unSub()
-  }, [blogId])
-
-  const commentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!body.trim()) return alert('コメントを入力してください')
-    try {
-      await addDoc(collection(db, 'comments'), {
-        blogId,
-        name: name.trim() || '名無しさん', // 空ならデフォルト名
-        body,
-        date: serverTimestamp(),
-      })
-      setBody('')
-    } catch {
-      alert('コメントを投稿できませんでした')
-    }
-  }
+  // コメント投稿後に一覧を再レンダーさせる
+  const handlePosted = () => setCount(c => c + 1)
 
   return (
     <div className="mt-10 space-y-6 px-5 w-full">
-      <h3 className="text-lg font-semibold">コメント ({comments.length})</h3>
-      <ul className="space-y-6 w-full">
-        {comments.map((comment, index) => ( // index を受け取る
-          <li key={comment.id} className="bg-white py-10">
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-semibold text-gray-800">
-                {index + 1}.
-                {' '}
-                {comment.name}
-              </p>
-              <time className="text-xs text-gray-400">
-                {comment.date.toLocaleString()}
-              </time>
-            </div>
-            <p
-              className="text-gray-600 leading-relaxed whitespace-pre-line"
-              dangerouslySetInnerHTML={{ __html: linkifyText(comment.body) }}
-            >
-            </p>
-          </li>
-        ))}
-      </ul>
-      <form onSubmit={commentSubmit} className="space-y-2 mt-6">
-        <input
-          type="text"
-          placeholder="お名前"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
-        />
-        <textarea
-          placeholder="コメント"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className="w-full border px-3 py-2 rounded h-64"
-        />
-        <button
-          type="submit"
-          className="bg-teal-500 w-full text-white px-4 py-2 rounded"
-        >
-          送信
-        </button>
-      </form>
+      <h3 className="text-lg font-semibold">コメント ({count})</h3>
+      <CommentList comments={comments} />
+      <CommentForm blogId={blogId} onPosted={handlePosted} />
     </div>
   )
 }
-
-export default Comment

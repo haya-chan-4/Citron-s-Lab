@@ -36,3 +36,7 @@ body {
 .category-tag {
   @apply w-max h-min text-sm text-indigo-600 border border-indigo-600 rounded px-2 pt-[3px] pb-[2px];
 }
+
+.comment-link {
+  @apply text-blue-600 hover:text-blue-400
+}
