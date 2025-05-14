@@ -12,6 +12,7 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 import { db } from '@/libs/firebase'
+import { linkifyText } from '@/utils/format'; // 作成した関数をインポート
 
 interface CommentProps {
   blogId: string
@@ -67,17 +68,25 @@ const Comment = ({ blogId }: CommentProps) => {
 
   return (
     <div className="mt-10 space-y-6 px-5 w-full">
-      <h3 className="text-lg font-semibold">コメント</h3>
+      <h3 className="text-lg font-semibold">コメント ({comments.length})</h3>
       <ul className="space-y-6 w-full">
-        {comments.map((comment) => (
+        {comments.map((comment, index) => ( // index を受け取る
           <li key={comment.id} className="bg-white py-10">
             <div className="flex items-center justify-between mb-2">
-              <p className="font-semibold text-gray-800">{comment.name}</p>
+              <p className="font-semibold text-gray-800">
+                {index + 1}.
+                {' '}
+                {comment.name}
+              </p>
               <time className="text-xs text-gray-400">
                 {comment.date.toLocaleString()}
               </time>
             </div>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">{comment.body}</p>
+            <p
+              className="text-gray-600 leading-relaxed whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: linkifyText(comment.body) }}
+            >
+            </p>
           </li>
         ))}
       </ul>
