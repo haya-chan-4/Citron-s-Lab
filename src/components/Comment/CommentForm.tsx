@@ -5,9 +5,10 @@ import { addDoc, serverTimestamp } from 'firebase/firestore'
 import { collection } from 'firebase/firestore'
 import { db } from '@/libs/firebase'
 
-type Props = { blogId: string; onPosted: () => void }
+type Props = { blogId: string }
 
-export const CommentForm = ({ blogId, onPosted }: Props) => {
+
+export const CommentForm = ({ blogId }: Props) => {
   const [name, setName] = useState('名無しさん')
   const [body, setBody] = useState('')
 
@@ -22,7 +23,7 @@ export const CommentForm = ({ blogId, onPosted }: Props) => {
         date: serverTimestamp(),
       })
       setBody('')
-      onPosted()
+
     } catch {
       alert('コメントを投稿できませんでした')
     }

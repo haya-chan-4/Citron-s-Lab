@@ -2,7 +2,7 @@
 import { client } from '@/libs/client'
 import { BlogPost } from "@/types/blogPost"
 import SideBar from '@/components/Body/SideBar/SideBar'
-import Comment from '@/components/Comment/Comment'
+import Comment from '@/components/Comment/Comments'
 import ArticleContent from '@/components/Body/Main/ArticleContent'
 export const revalidate = 60
 export const generateStaticParams = async () => {
