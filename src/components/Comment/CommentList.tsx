@@ -1,6 +1,6 @@
 // components/comments/CommentList.tsx
 'use client'
-import CommentItem from '@/components/Comment/commentItem'
+import CommentItem from '@/components/Comment/CommentItem'
 import type { Comment } from '@/hooks/useComments'
 
 interface Props { comments: Comment[] }
