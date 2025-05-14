@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { getPaginatedBlogs } from '@/libs/api'
 import { getPaginationParams } from '@/utils/pagination'
 
-export default async function Page({ params }: { params: { id: string } }) {
+const Page = async({ params }: { params: { id: string } }) => {
   const { currentPage, offset } = getPaginationParams({ pageParam: params.id })
 
   if (isNaN(currentPage) || currentPage < 1) return notFound()
@@ -29,3 +29,4 @@ export default async function Page({ params }: { params: { id: string } }) {
     />
   );
 }
+export default Page
