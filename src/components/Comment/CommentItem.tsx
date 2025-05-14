@@ -5,7 +5,9 @@ import { linkifyText } from '@/utils/format'
 
 type Props = { index: number; name: string; body: string; date: Date }
 
-const CommentItem = ({ index, name, body, date }: Props) => (
+const CommentItem = (props: Props) => {
+  const { index, name, body, date } = props
+return (
   <li className="bg-white py-10">
     <div className="flex items-center justify-between mb-2">
       <p className="font-semibold text-gray-800">
@@ -21,4 +23,5 @@ const CommentItem = ({ index, name, body, date }: Props) => (
     />
   </li>
 )
+}
 export default CommentItem
