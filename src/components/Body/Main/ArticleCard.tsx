@@ -46,7 +46,7 @@ const ArticleCard = (props: ArticleCardProps) => {
             {blog.category && (
               <CategoryDisplay categoryId={blog.category} styleType="tag" />
             )}
-            <time className="text-base text-gray-600 flex items-center">
+            <time className="text-base text-gray-600 flex items-center pt-2">
               <Clock4 className="mr-2 size-4 text-gray-500" />
               {blog.publishedAt && (
                 <DateFormatter dateString={blog.publishedAt} />
