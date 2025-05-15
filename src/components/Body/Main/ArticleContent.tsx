@@ -41,7 +41,7 @@ const ArticleContent = ({ post }: ArticleContentProps) => {
       <MetaInfo publishedAt={post.publishedAt} category={post.category} />
 
       {/* 本文 */}
-      <div className="prose max-w-full prose-sm md:prose-lg prose-headings:font-semibold prose-img:rounded-sm prose-a:text-blue-600 sm:w-full ">
+      <div className="prose max-w-[760px] prose-sm md:prose-lg prose-headings:font-semibold prose-img:rounded-sm prose-a:text-blue-600 sm:w-full ">
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
       </div>
       {/* コメント */}
