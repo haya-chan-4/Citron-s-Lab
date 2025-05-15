@@ -13,7 +13,7 @@ interface ArticleContentProps {
   }
 }
 
-const ArticleContent = ({ post }: ArticleContentProps): JSX.Element => {
+const ArticleContent = ({ post }: ArticleContentProps) => {
   return (
     <article className="flex-1 w-full max-w-[820px] px-4 xl:px-0 ">
       {/* アイキャッチ画像 */}

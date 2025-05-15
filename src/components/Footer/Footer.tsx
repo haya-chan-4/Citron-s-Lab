@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <footer className="bg-indigo-900 text-gray-300 py-8 px-4">
+    <footer className="bg-indigo-900 text-gray-300 py-8 px-4 w-screen">
       <div className="max-w-screen-xl mx-auto grid-cols-1 flex justify-center">
         {/* サイト名称 */}
         <div>

@@ -24,21 +24,17 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <div className="flex flex-col lg:flex-row py-10 sm:px-4 md:px-24">
-        {/* メインコンテンツ */}
         <ArticleContent post={post} />
-        {/* サイドバー */}
         <SideBar />
       </div>
       <div className="mt-12 flex justify-center pt-20">
         <div className="w-full max-w-6xl border">
           {' '}
-          {/* ここの max-w-? はお好みで調整 */}
         </div>
       </div>
       <div className="mt-12 flex justify-center pb-20">
         <div className="w-full max-w-3xl">
           {' '}
-          {/* ここの max-w-? はお好みで調整 */}
           <Comment blogId={post.id} />
         </div>
       </div>

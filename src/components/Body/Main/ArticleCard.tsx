@@ -19,7 +19,7 @@ interface ArticleCardProps {
   }
 }
 
-const ArticleCard = (props: ArticleCardProps): JSX.Element => {
+const ArticleCard = (props: ArticleCardProps) => {
   const { blog } = props
   const articleLinkHref = `/blog/${blog.id}`
 
@@ -59,4 +59,4 @@ const ArticleCard = (props: ArticleCardProps): JSX.Element => {
   )
 }
 
-export default React.memo(ArticleCard)
+export default ArticleCard
