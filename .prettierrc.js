@@ -2,5 +2,6 @@
 module.exports = {
   semi: false,
   singleQuote: true,
-  printWidth: 80,
+  doubleQuote: false,
+  // printWidth: 80,
 };

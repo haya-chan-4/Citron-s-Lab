@@ -9,10 +9,6 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 import { db } from '@/libs/firebase'
-// Suspense と Spinner はこのフックでは使用しないため import は削除します
-// import { Suspense } from 'react';
-// import Spinner from '@/components/Header/Spinner';
-
 export interface Comment {
   id: string
   name: string
