@@ -28,9 +28,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
         <SideBar />
       </div>
       <div className="mt-12 flex justify-center pt-20">
-        <div className="w-full max-w-6xl border">
-          {' '}
-        </div>
+        <div className="w-full max-w-6xl border"> </div>
       </div>
       <div className="mt-12 flex justify-center pb-20">
         <div className="w-full max-w-3xl">
