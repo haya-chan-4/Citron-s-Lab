@@ -17,7 +17,6 @@ const CategoryDisplay: React.FC<Props> = ({
   }
 
   const categoryName = formatCategoryName(categoryId)
-
   switch (styleType) {
     case 'tag':
       return (

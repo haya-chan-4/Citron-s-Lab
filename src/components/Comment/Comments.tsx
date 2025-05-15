@@ -23,7 +23,7 @@ export default function Comments({ blogId }: Props) {
   }
 
   return (
-    <div className="mt-10 space-y-6 px-5 w-full">
+    <div className="mt-10 space-y-6 px-2 w-full">
       <h3 className="text-lg font-semibold">
         コメント ({loading ? 0 : comments.length})
       </h3>

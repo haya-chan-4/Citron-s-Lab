@@ -38,11 +38,11 @@ const ArticleCard = (props: ArticleCardProps) => {
             sizes="(max-width: 600px) 100vw, (max-width: 1024px) 72px, 33vw"
           />
         </div>
-        <div className="grid grid-cols-1 w-full">
+        <div className="grid grid-cols-1 w-full  items-center">
           <h2 className="grid-span-2 text-lg font-semibold text-gray-700 p-5 mg-8">
             {blog.title}
           </h2>
-          <div className="grid text-lg text-gray-700 px-5 pb-4">
+          <div className="grid text-lg text-gray-700 px-5 py-2">
             {blog.category && (
               <CategoryDisplay categoryId={blog.category} styleType="tag" />
             )}
