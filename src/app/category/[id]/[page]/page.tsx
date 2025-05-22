@@ -16,7 +16,7 @@ const CategoryPage: React.FC<PageProps> = async ({ params }) => {
   const categoryId = params.id
   const pageParam = params.page
   const { currentPage, offset } = getPaginationParams({
-    pageParam
+    pageParam,
   })
 
   // microCMS から記事を取得
