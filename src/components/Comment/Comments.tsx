@@ -1,15 +1,15 @@
 // components/comments/Comments.tsx
 'use client'
 import { useComments } from '@/hooks/useComments'
-import { CommentList } from './CommentList'
-import { CommentForm } from './CommentForm'
+import CommentList from './CommentList'
+import CommentForm from './CommentForm'
 import Spinner from '@/components/Header/Spinner'
 
 interface Props {
   blogId: string
 }
 
-export default function Comments({ blogId }: Props) {
+const Comments = ({ blogId }: Props) => {
   const { comments, loading, error } = useComments(blogId)
 
   if (error) {
@@ -43,3 +43,4 @@ export default function Comments({ blogId }: Props) {
     </div>
   )
 }
+export default Comments

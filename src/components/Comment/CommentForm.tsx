@@ -7,7 +7,7 @@ import { db } from '@/libs/firebase'
 
 type Props = { blogId: string }
 
-export const CommentForm = ({ blogId }: Props) => {
+const CommentForm = ({ blogId }: Props) => {
   const [name, setName] = useState('名無しさん')
   const [body, setBody] = useState('')
 
@@ -21,8 +21,11 @@ export const CommentForm = ({ blogId }: Props) => {
         body,
         date: serverTimestamp(),
       })
-      setBody('')
-    } catch {
+      setBody('') // フォームをクリア
+      // ★ ここにページリロードの処理を追加 ★
+      window.location.reload() // ページを強制的にリロード
+    } catch (error) {
+      console.error('コメント投稿失敗:', error) // デバッグ用にエラーをコンソールに出力
       alert('コメントを投稿できませんでした')
     }
   }
@@ -51,3 +54,4 @@ export const CommentForm = ({ blogId }: Props) => {
     </form>
   )
 }
+export default CommentForm
