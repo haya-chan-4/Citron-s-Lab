@@ -24,10 +24,15 @@ interface UseCommentsResult {
   error: Error | null
 }
 
-export const useComments = (blogId: string): UseCommentsResult => {
+export const useComments = (
+  blogId: string,
+): UseCommentsResult & { addCommentLocally: (newComment: Comment) => void } => {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const addCommentLocally = (newComment: Comment) => {
+    setComments((prevComments) => [...prevComments, newComment])
+  }
 
   useEffect(() => {
     // blogId が無効な場合は何もしないでローディングを終了
@@ -77,5 +82,5 @@ export const useComments = (blogId: string): UseCommentsResult => {
     // return () => unsubscribe() は不要になります。
   }, [blogId]) // blogId が変更されたら useEffect を再実行
 
-  return { comments, loading, error }
+  return { comments, loading, error, addCommentLocally }
 }
