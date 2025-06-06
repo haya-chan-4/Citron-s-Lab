@@ -71,7 +71,7 @@ const SideBar: React.FC<Props> = async () => {
       </section>
 
       {/* 最新記事 */}
-      <section className="bg-white p-4 sticky top-0">
+      <section className="bg-white p-4 sticky -top-2">
         <h2 className="text-lg bg-gray-200 p-2 rounded-md font-semibold mb-3">
           最新記事
         </h2>
