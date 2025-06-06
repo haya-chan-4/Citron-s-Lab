@@ -1,11 +1,12 @@
 // src/components/Body/Main/ArticleContent.tsx
 import Image from 'next/image'
-import LocationOfPage from '@/components/Body/Main/LocationOfPage'
+// import LocationOfPage from '@/components/Body/Main/LocationOfPage'
 import MetaInfo from '@/components/Body/Main/MetaInfo'
 
 interface ArticleContentProps {
   post: {
     category: string
+    url: string
     thumbnail?: { url: string }
     title: string
     publishedAt: string
@@ -30,7 +31,7 @@ const ArticleContent = ({ post }: ArticleContentProps) => {
         </div>
       )}
       {/* パンくず */}
-      <LocationOfPage category={post.category} page="ホーム" />
+      {/* <LocationOfPage category={post.category} page="ホーム" categoryUrlId={'/'} /> */}
 
       {/* タイトル */}
       <h1 className="text-3xl font-bold mb-4 text-gray-800  sm:w-full">
@@ -38,7 +39,11 @@ const ArticleContent = ({ post }: ArticleContentProps) => {
       </h1>
 
       {/* メタ情報 */}
-      <MetaInfo publishedAt={post.publishedAt} category={post.category} />
+      <MetaInfo
+        publishedAt={post.publishedAt}
+        category={post.category}
+        categoryUrlId={post.url}
+      />
 
       {/* 本文 */}
       <div className="prose max-w-[760px] prose-sm md:prose-lg prose-headings:font-semibold prose-img:rounded-sm prose-a:text-blue-600 sm:w-full ">

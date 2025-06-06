@@ -1,6 +1,7 @@
 // types/blog.ts
 
 export interface Blog {
+  url: string
   publishedAt: string
   thumbnail: {
     url: string

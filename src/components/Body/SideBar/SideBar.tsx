@@ -1,6 +1,6 @@
 // src/components/Body/SideBar/SideBar.tsx
 import { client } from '@/libs/client'
-import { Blog } from '@/types/blog'
+import { Blog } from '@/types/blog' // Blog 型をインポート
 import LatestCard from './LatestCard'
 import CategoryItem from './CategoryItem'
 import { formatCategoryName } from '@/utils/format'
@@ -23,7 +23,8 @@ const getCategories = async (): Promise<Blog[]> => {
     endpoint: 'blog',
     queries: {
       limit: 100,
-      fields: 'id,title,publishedAt,thumbnail,category',
+      // ★ category と url の両方を必ず取得する ★
+      fields: 'id,title,publishedAt,thumbnail,category,url',
     },
   })
   return data.contents
@@ -33,17 +34,21 @@ const SideBar: React.FC<Props> = async () => {
   const [blogs, categories] = await Promise.all([getBlogs(), getCategories()])
 
   // カテゴリ名を正規化（小文字化）して重複を除外 → 表示用に整形
-  // normalized: 小文字（URL用）
-  // label: 表示用（頭文字大文字）
+  // uniqueCategoryMap のキーは URL 用の値 (blog.url を小文字化したもの)
   const uniqueCategoryMap = new Map<string, { label: string; value: string }>()
 
   categories.forEach((blog) => {
-    if (typeof blog.category === 'string') {
-      const normalized = blog.category.toLowerCase()
-      if (!uniqueCategoryMap.has(normalized)) {
-        uniqueCategoryMap.set(normalized, {
-          label: formatCategoryName(blog.category), // 表示用
-          value: normalized, // URL用
+    // ★ blog.category と blog.url の両方が存在することを確認 ★
+    if (typeof blog.category === 'string' && typeof blog.url === 'string') {
+      // ★ URL 用の値として blog.url を小文字化して使用 ★
+      // microCMS の 'url' フィールドが既に URL に適した形式で登録されていることを想定していますが、
+      // 念のため小文字に統一します。
+      const categoryUrl = blog.url.toLowerCase()
+
+      if (!uniqueCategoryMap.has(categoryUrl)) {
+        uniqueCategoryMap.set(categoryUrl, {
+          label: formatCategoryName(blog.category), // 表示用には blog.category を整形して使用
+          value: categoryUrl, // ★ URL 用の値として blog.url を使用 ★
         })
       }
     }
@@ -79,7 +84,7 @@ const SideBar: React.FC<Props> = async () => {
                 title: blog.title,
                 publishedAt: blog.publishedAt ?? '',
                 thumbnail: {
-                  url: blog.thumbnail.url,
+                  url: blog.thumbnail?.url || '', // thumbnail が undefined の可能性を考慮
                 },
               }}
             />
