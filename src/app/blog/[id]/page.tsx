@@ -4,6 +4,8 @@ import { BlogPost } from '@/types/blogPost'
 import SideBar from '@/components/Body/SideBar/SideBar'
 import Comments from '@/components/Comment/Comments'
 import ArticleContent from '@/components/Body/Main/ArticleContent'
+import TwitterEmbeds from '@/components/integrations/TwitterEmbeds' // ★ 追加 ★
+
 export const revalidate = 60
 export const generateStaticParams = async () => {
   const ids = await client.getAllContentIds({ endpoint: 'blog' })
@@ -36,6 +38,8 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
           <Comments blogId={post.id} />
         </div>
       </div>
+
+      <TwitterEmbeds />
     </div>
   )
 }
