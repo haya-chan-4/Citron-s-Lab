@@ -2,7 +2,7 @@
 import { client } from '@/libs/client'
 import { BlogPost } from '@/types/blogPost'
 import SideBar from '@/components/Body/SideBar/SideBar'
-import Comment from '@/components/Comment/Comments'
+import Comments from '@/components/Comment/Comments'
 import ArticleContent from '@/components/Body/Main/ArticleContent'
 export const revalidate = 60
 export const generateStaticParams = async () => {
@@ -33,7 +33,7 @@ const BlogPostPage = async ({ params }: { params: { id: string } }) => {
       <div className="mt-12 flex justify-center pb-20">
         <div className="w-full max-w-3xl">
           {' '}
-          <Comment blogId={post.id} />
+          <Comments blogId={post.id} />
         </div>
       </div>
     </div>
