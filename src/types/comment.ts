@@ -1,20 +1,23 @@
+// src/types/comment.ts
 import { Timestamp } from 'firebase/firestore'
 
-// src/types/comment.ts
-export interface Comment {
+export type Comment = {
   id: string
   name: string
   body: string
-  date: Date // または string (Firebase/microCMSの形式に合わせる)
-  parentId?: string | null // ★ 追加: 親コメントのID。最上位コメントは null または undefined ★
-  // blogId?: string; // コメントがどのブログに紐づくか、もし必要なら
+  date: Date
+  parentId: string | null
 }
 
-// Firebaseのコメントデータと型を合わせる場合
-export interface FirebaseCommentData {
+export interface CommentWithReplyInfo extends Comment {
+  displayNumber: number
+  repliedByNumbers: number[]
+}
+
+export type FirebaseCommentData = {
   name: string
   body: string
-  date: Timestamp
   blogId: string
-  parentId?: string | null // Firebaseに保存するデータにもparentIdを追加
+  date: Timestamp
+  parentId: string | null
 }
