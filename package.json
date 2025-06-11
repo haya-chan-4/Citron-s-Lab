@@ -10,6 +10,7 @@
     "lint": "eslint src/**/*.{js,jsx,ts,tsx} --fix"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.5",
     "firebase": "^11.7.1",
