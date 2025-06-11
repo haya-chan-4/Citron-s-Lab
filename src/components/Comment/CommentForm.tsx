@@ -17,7 +17,6 @@ interface CommentFormProps {
   parentId?: string | null
   onCancelReply?: () => void;
   replyToCommentNumber?: number;
-  // ★ 追加: 返信先のコメント名プロップ ★
   replyToCommentName?: string;
 }
 
@@ -39,25 +38,20 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
 
   useEffect(() => {
     if (parentId && replyToCommentNumber !== undefined) {
-      setBody(`>>${replyToCommentNumber}\n`);
       setTimeout(() => {
         if (textareaRef.current) {
-          const newCursorPosition = (`>>${replyToCommentNumber}\n`).length;
           textareaRef.current.focus();
-          textareaRef.current.setSelectionRange(newCursorPosition, newCursorPosition);
         }
       }, 0);
-    } else {
-      setBody('');
     }
+    setBody('');
   }, [parentId, replyToCommentNumber]);
 
   useImperativeHandle(ref, () => ({
     focusTextArea: () => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        const initialTextLength = body.length;
-        textareaRef.current.setSelectionRange(initialTextLength, initialTextLength);
+        textareaRef.current.setSelectionRange(0, 0);
       }
     },
     scrollIntoView: (options) => {
@@ -72,14 +66,22 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
     setSubmitError(null)
     setIsSubmitting(true)
 
-    if (!body.trim()) {
+    const trimmedBody = body.trim();
+
+    if (!trimmedBody) {
       setSubmitError('コメントを入力してください')
       setIsSubmitting(false)
       return
     }
 
+    let commentToPost = trimmedBody;
+
+    if (parentId && replyToCommentNumber !== undefined) {
+      commentToPost = `>>${replyToCommentNumber}\n${trimmedBody}`;
+    }
+
     try {
-      const newComment = await postComment(name.trim(), body.trim(), blogId, parentId)
+      const newComment = await postComment(name.trim(), commentToPost, blogId, parentId)
 
       onCommentAdded({
         id: newComment.id,
@@ -99,15 +101,29 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
     }
   }
 
-  // ★ 変更: フォームタイトルを新しい形式に変更 ★
   const formTitle =
     parentId && replyToCommentNumber !== undefined && replyToCommentName !== undefined
-      ? `${replyToCommentNumber}.${replyToCommentName} へコメント`
+      ? `${replyToCommentNumber}. ${replyToCommentName} へコメント`
       : 'コメントを投稿';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2 mt-6 pt-10" ref={formRef}>
-      <h4 className="text-lg font-semibold mb-2">{formTitle}</h4>
+      {/* ★ 変更: タイトルとキャンセルボタンを Flexbox で配置 ★ */}
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="text-lg font-semibold">{formTitle}</h4>
+        {onCancelReply && ( // onCancelReply が存在する場合のみ表示
+          <button
+            type="button"
+            onClick={onCancelReply}
+            className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            disabled={isSubmitting}
+            aria-label="返信をキャンセル"
+          >
+            <X className="w-5 h-5" /> {/* アイコンサイズを調整 */}
+          </button>
+        )}
+      </div>
+
       {submitError && <p className="text-red-500 mb-4">{submitError}</p>}
       <input
         type="text"
@@ -134,16 +150,7 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
           {isSubmitting && <Spinner className="mr-2" />}
           {parentId ? '返信を投稿' : '送信'}
         </button>
-        {onCancelReply && (
-          <button
-            type="button"
-            onClick={onCancelReply}
-            className="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center"
-            disabled={isSubmitting}
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
+        {/* ★ 削除: ここにあったキャンセルボタンは移動しました ★ */}
       </div>
     </form>
   )
@@ -151,4 +158,4 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
 
 CommentForm.displayName = 'CommentForm';
 
-export default CommentForm;
+export default CommentForm

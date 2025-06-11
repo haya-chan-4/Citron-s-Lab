@@ -12,7 +12,6 @@ interface CommentItemProps {
   comment: Comment
   blogId: string
   index?: number
-  // ★ 変更: onReplyClick の型定義に commentName を追加 ★
   onReplyClick: (commentId: string, commentNumber: number, commentName: string) => void
 }
 
@@ -50,11 +49,15 @@ const CommentItem = ({
         />
 
         <button
-          // ★ 変更: onReplyClick に comment.name を渡す ★
           onClick={() => onReplyClick(comment.id, (index ?? 0) + 1, comment.name)}
-          className="text-gray-600 hover:underline flex items-center group flex-row-reverse ml-4"
+          // ★ 変更: ml-1 を削除し、px-2 を追加して楕円を解消 ★
+          // 垂直方向のパディング p-1 はそのままに、水平方向のパディングを px-2 にすることで、
+          // アイコンとボタンの左右の余白を調整し、より真円に近づけます。
+          // flex-row-reverse でアイコンを右に、テキストを左に配置しつつ、全体が真円になるように調整
+          className="text-gray-600 hover:text-gray-800 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors flex items-center group flex-row-reverse"
         >
-          <Reply className="w-4 h-4 ml-1 text-gray-600 group-hover:text-gray-800" />
+          {/* Replyアイコンからml-1を削除。アイコンとテキスト間のスペースはボタンのパディングで調整 */}
+          <Reply className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
         </button>
       </div>
     </li>
