@@ -11,9 +11,8 @@ interface CommentWithReplyInfo extends Comment {
 }
 
 interface CommentListProps {
-  // ★ 変更: comments の型を CommentWithReplyInfo[] に変更 ★
   comments: CommentWithReplyInfo[]
-  blogId: string
+  // blogId: string; // ★ 削除: 'blogId' は CommentList 内で使われていないため削除 ★
   onReplyClick: (
     commentId: string,
     commentNumber: number,
@@ -21,21 +20,18 @@ interface CommentListProps {
   ) => void
 }
 
-const CommentList = ({ comments, blogId, onReplyClick }: CommentListProps) => {
-  // Comments.tsx で既にソートされているため、ここではソート不要
-  // const sortedComments = [...comments].sort((a, b) => a.date.getTime() - b.date.getTime())
-
+const CommentList = ({
+  comments,
+  // blogId, // ★ 削除: 'blogId' は使用されていないため引数から削除 ★
+  onReplyClick,
+}: CommentListProps) => {
   return (
-    <ul className="w-full">
+    <ul className="space-y-6 w-full">
       {comments.length > 0 ? (
-        // ★ 変更: comments を直接 map する（既にソート済み） ★
         comments.map((comment) => (
           <CommentItem
             key={comment.id}
-            comment={comment} // 拡張されたコメントオブジェクトを渡す
-            blogId={blogId}
-            // index は comment.displayNumber で代用可能
-            // index={comment.displayNumber - 1} // 必要であれば元のindexに戻す
+            comment={comment}
             onReplyClick={onReplyClick}
           />
         ))

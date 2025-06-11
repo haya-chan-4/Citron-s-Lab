@@ -144,7 +144,7 @@ const Comments = ({ blogId }: Props) => {
       ) : (
         <CommentList
           comments={commentsWithReplyInfo}
-          blogId={blogId}
+          // blogId={blogId} // ★ 削除: CommentList は blogId を必要としなくなったため、ここから削除 ★
           onReplyClick={handleReplyClick}
         />
       )}
@@ -164,7 +164,6 @@ const Comments = ({ blogId }: Props) => {
           onCommentAdded={handleTopLevelCommentAdded}
           onCancelReply={handleCancelReplyForm}
           replyToCommentNumber={replyingToCommentNumber}
-          // ★ 変更: タイポ修正 ★
           replyToCommentName={replyingToCommentName}
           ref={commentFormRef}
         />
