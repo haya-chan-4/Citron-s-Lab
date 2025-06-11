@@ -11,7 +11,9 @@ export const anchorCommentMentions = (text: string) => {
 
   return text.replace(commentMentionRegex, (match, p1) => {
     const commentNumber = p1
-    return `<a href="#comments" class="text-blue-500 hover:underline font-bold" onclick="document.getElementById('comment-${commentNumber}')?.scrollIntoView({ behavior: 'smooth' })">${match}</a>`
+    // ★ 変更: href に直接ターゲットIDを指定 ★
+    // onclick が機能しない場合でも、ブラウザのデフォルト動作でIDへのスクロールが試みられる
+    return `<a href="#comment-${commentNumber}" class="text-blue-500 hover:underline font-bold" onclick="document.getElementById('comment-${commentNumber}')?.scrollIntoView({ behavior: 'smooth' })">${match}</a>`
   })
 }
 
@@ -27,13 +29,11 @@ export const formatCategoryName = (category: string): string => {
   return category.charAt(0).toUpperCase() + category.slice(1)
 }
 
-// ★ 変更: RegExpStringIterator エラーの解消 ★
 export const extractMentionedCommentNumbers = (text: string): number[] => {
   const commentMentionRegex = />>(\d+)/g
-  const matches: number[] = [] // 結果を格納する配列を初期化
-  let match // RegExpExecArray を格納する変数
+  const matches: number[] = []
+  let match
 
-  // matchAll の代わりに exec をループで使用
   while ((match = commentMentionRegex.exec(text)) !== null) {
     matches.push(parseInt(match[1], 10))
   }
