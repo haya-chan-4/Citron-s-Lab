@@ -26,7 +26,7 @@ const CommentList = ({
   onReplyClick,
 }: CommentListProps) => {
   return (
-    <ul className="space-y-6 w-full">
+    <ul className="space-y-20 w-full">
       {comments.length > 0 ? (
         comments.map((comment) => (
           <CommentItem
