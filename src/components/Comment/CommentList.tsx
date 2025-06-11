@@ -14,7 +14,11 @@ interface CommentListProps {
   // ★ 変更: comments の型を CommentWithReplyInfo[] に変更 ★
   comments: CommentWithReplyInfo[]
   blogId: string
-  onReplyClick: (commentId: string, commentNumber: number, commentName: string) => void
+  onReplyClick: (
+    commentId: string,
+    commentNumber: number,
+    commentName: string,
+  ) => void
 }
 
 const CommentList = ({ comments, blogId, onReplyClick }: CommentListProps) => {

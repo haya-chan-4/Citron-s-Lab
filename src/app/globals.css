@@ -15,7 +15,7 @@
 }
 
 html {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
 }
 
 body {
@@ -43,5 +43,5 @@ body {
 }
 
 .comment-link {
-  @apply text-blue-600 hover:text-blue-400
+  @apply text-blue-600 hover:text-blue-400;
 }

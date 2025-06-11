@@ -17,7 +17,11 @@ interface CommentItemProps {
   comment: CommentWithReplyInfo
   blogId: string
   index?: number
-  onReplyClick: (commentId: string, commentNumber: number, commentName: string) => void
+  onReplyClick: (
+    commentId: string,
+    commentNumber: number,
+    commentName: string,
+  ) => void
 }
 
 const CommentItem = ({
@@ -57,7 +61,9 @@ const CommentItem = ({
 
         <div className="flex flex-col items-end ml-4">
           <button
-            onClick={() => onReplyClick(comment.id, displayCommentNumber, comment.name)}
+            onClick={() =>
+              onReplyClick(comment.id, displayCommentNumber, comment.name)
+            }
             className="text-gray-600 hover:text-gray-800 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors flex items-center group flex-row-reverse"
           >
             <Reply className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
@@ -74,7 +80,9 @@ const CommentItem = ({
               className="text-blue-500 pt-10 hover:underline text-xs"
               onClick={(e) => {
                 e.preventDefault()
-                document.getElementById(`comment-${replyingNum}`)?.scrollIntoView({ behavior: 'smooth' })
+                document
+                  .getElementById(`comment-${replyingNum}`)
+                  ?.scrollIntoView({ behavior: 'smooth' })
               }}
             >
               ※{replyingNum}
