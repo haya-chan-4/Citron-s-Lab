@@ -49,7 +49,7 @@ const CommentItem = ({
 
       <div className="flex justify-between items-start w-full">
         <p
-          className="text-gray-700 leading-relaxed whitespace-pre-line flex-grow pr-10"
+          className="text-gray-700 leading-relaxed whitespace-pre-line flex-grow"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(formatCommentBody(comment.body), {
               ADD_ATTR: ['target'],
@@ -70,7 +70,7 @@ const CommentItem = ({
       </div>
 
       {comment.repliedByNumbers.length > 0 && (
-        <div className="flex justify-end mt-4 space-x-1 w-full">
+        <div className="flex justify-end mt-4 space-x-2 w-full">
           {comment.repliedByNumbers.map((replyingNum) => (
             <a
               key={replyingNum}
