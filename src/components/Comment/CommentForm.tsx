@@ -101,17 +101,17 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
     }
   }
 
+  // ★ 変更: フォームタイトルを「〇〇へのコメント」形式に変更 ★
   const formTitle =
     parentId && replyToCommentNumber !== undefined && replyToCommentName !== undefined
-      ? `${replyToCommentNumber}. ${replyToCommentName} へコメント`
+      ? `>>${replyToCommentNumber}. ${replyToCommentName}へのコメント` // 変更点
       : 'コメントを投稿';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2 mt-6 pt-10" ref={formRef}>
-      {/* ★ 変更: タイトルとキャンセルボタンを Flexbox で配置 ★ */}
       <div className="flex items-center justify-between mb-2">
         <h4 className="text-lg font-semibold">{formTitle}</h4>
-        {onCancelReply && ( // onCancelReply が存在する場合のみ表示
+        {onCancelReply && (
           <button
             type="button"
             onClick={onCancelReply}
@@ -119,7 +119,7 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
             disabled={isSubmitting}
             aria-label="返信をキャンセル"
           >
-            <X className="w-5 h-5" /> {/* アイコンサイズを調整 */}
+            <X className="w-5 h-5" />
           </button>
         )}
       </div>
@@ -150,7 +150,6 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
           {isSubmitting && <Spinner className="mr-2" />}
           {parentId ? '返信を投稿' : '送信'}
         </button>
-        {/* ★ 削除: ここにあったキャンセルボタンは移動しました ★ */}
       </div>
     </form>
   )
@@ -158,4 +157,4 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(({ blogId
 
 CommentForm.displayName = 'CommentForm';
 
-export default CommentForm
+export default CommentForm;

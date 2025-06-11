@@ -1,44 +1,41 @@
 // src/utils/format.ts
+export const linkifyText = (text: string) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g
+  return text.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">${url}</a>`
+  })
+}
 
-export const formatCategoryName = (name: string): string =>
-  name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
-export function linkifyText(text: string): string {
-  if (!text) return ''
+export const anchorCommentMentions = (text: string) => {
+  const commentMentionRegex = />>(\d+)/g
 
-  // HTML 特殊文字をエスケープして XSS 攻撃を防ぐ基本的な対策
-  const escapeHTML = (str: string): string => {
-    return str.replace(/[&<>\"']/g, (match) => {
-      switch (match) {
-        case '&':
-          return '&amp;'
-        case '<':
-          return '&lt;'
-        case '>':
-          return '&gt;'
-        case '"':
-          return '&quot;'
-        case "'":
-          return '&#39;'
-        default:
-          return match
-      }
-    })
+  return text.replace(commentMentionRegex, (match, p1) => {
+    const commentNumber = p1
+    return `<a href="#comments" class="text-blue-500 hover:underline font-bold" onclick="document.getElementById('comment-${commentNumber}')?.scrollIntoView({ behavior: 'smooth' })">${match}</a>`
+  })
+}
+
+export const formatCommentBody = (text: string) => {
+  let formattedText = text
+  formattedText = linkifyText(formattedText)
+  formattedText = anchorCommentMentions(formattedText)
+  return formattedText
+}
+
+export const formatCategoryName = (category: string): string => {
+  if (!category) return ''
+  return category.charAt(0).toUpperCase() + category.slice(1)
+}
+
+// ★ 変更: RegExpStringIterator エラーの解消 ★
+export const extractMentionedCommentNumbers = (text: string): number[] => {
+  const commentMentionRegex = />>(\d+)/g
+  const matches: number[] = [] // 結果を格納する配列を初期化
+  let match // RegExpExecArray を格納する変数
+
+  // matchAll の代わりに exec をループで使用
+  while ((match = commentMentionRegex.exec(text)) !== null) {
+    matches.push(parseInt(match[1], 10))
   }
-  const urlRegex = /(\b(?:https?|ftp):\/\/[^\s<]+)|(\bwww\.[^\s<]+)/g
-
-  const escapedText = escapeHTML(text)
-  const linkedText = escapedText.replace(
-    urlRegex,
-    (match, urlWithScheme, urlWithWww) => {
-      const url = urlWithScheme || urlWithWww
-      let href = url
-
-      if (url.startsWith('www.')) {
-        href = `http://${url}`
-      }
-      return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="comment-link">${url}</a>`
-    },
-  )
-
-  return linkedText
+  return matches
 }

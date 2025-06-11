@@ -13,20 +13,14 @@ import {
 } from 'firebase/firestore'
 import type { Comment, FirebaseCommentData } from '@/types/comment'
 
-// Firebaseから取得したTimestampをDateオブジェクトに変換するヘルパー
-// ★ ここを修正 ★
 const convertTimestampToDate = (
   timestamp: Timestamp | null | undefined,
 ): Date => {
-  // timestampがnullまたはundefinedの場合は、デフォルトのDateオブジェクト（例: 現在時刻）を返すか、
-  // またはエラーハンドリングを検討する
   if (timestamp instanceof Timestamp) {
-    // Timestampのインスタンスであることを確認
     return timestamp.toDate()
   }
-  // または、エラーを防ぐため、存在しない場合は仮のDateオブジェクトを返す
-  console.warn('Invalid timestamp received:', timestamp)
-  return new Date() // または適切なデフォルト値
+  // ★ 変更: console.warn を削除 ★
+  return new Date() // `null` や `undefined` の場合は現在の時刻を返す
 }
 
 export const useComments = (blogId: string) => {
@@ -51,14 +45,12 @@ export const useComments = (blogId: string) => {
       q,
       (snapshot) => {
         const fetchedComments: Comment[] = snapshot.docs.map((doc) => {
-          const data = doc.data()
-          // ★ ここも修正: `data.date` が Timestamp 型であることを確認またはキャスト ★
-          // Firestoreから取得したデータは型安全ではない可能性があるので注意
+          const data = doc.data() as FirebaseCommentData
           return {
             id: doc.id,
             name: data.name,
             body: data.body,
-            date: convertTimestampToDate(data.date as Timestamp), // Timestampとしてキャストして渡す
+            date: convertTimestampToDate(data.date),
             parentId: data.parentId || null,
           }
         })
@@ -92,20 +84,16 @@ export const useComments = (blogId: string) => {
           name,
           body,
           blogId: targetBlogId,
-          date: serverTimestamp() as Timestamp, // ここは serverTimestamp() なので、Firestoreに書き込まれるまではnull
+          date: serverTimestamp() as Timestamp,
           parentId: parentId,
         }
         const docRef = await addDoc(collection(db, 'comments'), commentData)
 
-        // ここで返される newComment の date は new Date() (現在のクライアント時刻) になります。
-        // これは、サーバータイムスタンプがまだ Firestore に反映されていないためです。
-        // 最終的には onSnapshot が正しいサーバータイムスタンプで更新されたデータを取得し、
-        // ローカルのコメントリストを上書きします。
         const newComment: Comment = {
           id: docRef.id,
           name,
           body,
-          date: new Date(), // 仮の日付
+          date: new Date(),
           parentId: parentId,
         }
         return newComment
