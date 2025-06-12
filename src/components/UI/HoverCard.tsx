@@ -1,5 +1,4 @@
 // src/components/UI/HoverCard.tsx
-
 import React, { useRef, useLayoutEffect } from 'react'
 import { format } from 'date-fns'
 import type { CommentWithReplyInfo } from '@/types/comment'
@@ -14,7 +13,7 @@ interface HoverCardProps {
     commentNumber: number,
     commentName: string,
   ) => void
-  side?: 'left' | 'right' // ★ 追加: 表示方向を指定するプロパティ ★
+  side?: 'left' | 'right'
 }
 
 const HoverCard = ({
@@ -24,7 +23,6 @@ const HoverCard = ({
   onReplyClick,
   side = 'right',
 }: HoverCardProps) => {
-  // ★ side のデフォルト値を 'right' に変更 ★
   const hoverCardRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
@@ -32,11 +30,16 @@ const HoverCard = ({
       const cardWidth = hoverCardRef.current.offsetWidth
       const cardHeight = hoverCardRef.current.offsetHeight
       const screenWidth = window.innerWidth
+      const screenHeight = window.innerHeight
 
-      // --- Y座標の調整 (カーソル直上) ---
+      // --- Y座標の調整 (極力アンカーの上部に表示、画面上下にはみ出す場合は調整) ---
       let newTop = y - cardHeight - 10
       if (newTop < 0) {
         newTop = y + 20
+      }
+      if (y + cardHeight + 20 > screenHeight && newTop > y) {
+        newTop = screenHeight - cardHeight - 10
+        if (newTop < 0) newTop = 10
       }
       hoverCardRef.current.style.top = `${newTop}px`
 
@@ -44,21 +47,16 @@ const HoverCard = ({
       let newLeft: number
 
       if (side === 'right') {
-        // ★ side が 'right' の場合 ★
-        newLeft = x + 10 // カーソルの右に表示
-        // 画面右端からはみ出す場合、左に調整
+        newLeft = x + 10
         if (newLeft + cardWidth > screenWidth) {
-          newLeft = x - cardWidth - 10 // カーソルの左に表示を試みる
-          // それでも画面左端からはみ出す場合、左端に固定
+          newLeft = x - cardWidth - 10
           if (newLeft < 0) newLeft = 10
         }
       } else {
-        // ★ side が 'left' の場合 (デフォルト動作) ★
-        newLeft = x - cardWidth - 10 // カーソルの左に表示
-        // 画面左端からはみ出す場合、右に調整
+        // side === 'left'
+        newLeft = x - cardWidth - 10
         if (newLeft < 0) {
-          newLeft = x + 10 // カーソルの右に表示を試みる
-          // それでも画面右端からはみ出す場合、右端に固定
+          newLeft = x + 10
           if (newLeft + cardWidth > screenWidth) {
             newLeft = screenWidth - cardWidth - 10
           }
@@ -66,7 +64,7 @@ const HoverCard = ({
       }
       hoverCardRef.current.style.left = `${newLeft}px`
     }
-  }, []) // 依存配列は空のまま
+  }, [x, y, side])
 
   return (
     <div
@@ -75,7 +73,9 @@ const HoverCard = ({
       style={{ opacity: 1 }}
     >
       <div className="flex items-center justify-between mb-2">
-        <p className="font-semibold text-gray-800">
+        <p className="font-semibold text-gray-800 text-sm">
+          {' '}
+          {/* ★ text-sm を追加 ★ */}
           {`${comment.displayNumber}. `}
           {comment.name}
         </p>
@@ -86,7 +86,9 @@ const HoverCard = ({
           {format(comment.date, 'yyyy/MM/dd HH:mm')}
         </time>
       </div>
-      <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-4">
+      <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-4 text-sm">
+        {' '}
+        {/* ★ text-sm を追加 ★ */}
         {comment.body}
       </p>
       <button

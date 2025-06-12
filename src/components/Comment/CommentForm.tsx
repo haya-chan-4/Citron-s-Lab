@@ -10,6 +10,8 @@ import React, {
 import { useComments } from '@/hooks/useComments'
 import Spinner from '@/components/Header/Spinner'
 import { X } from 'lucide-react'
+import CommentTitleMention from '@/components/UI/CommentTitleMention' // ★ 新しいパスでインポート ★
+import type { CommentWithReplyInfo } from '@/types/comment' // allComments の型のためにインポート
 
 interface CommentFormProps {
   blogId: string
@@ -24,6 +26,12 @@ interface CommentFormProps {
   onCancelReply?: () => void
   replyToCommentNumber?: number
   replyToCommentName?: string
+  allComments: CommentWithReplyInfo[] // ★ 追加: ホバーカード表示に必要な全コメントデータ ★
+  onReplyClick: (
+    commentId: string,
+    commentNumber: number,
+    commentName: string,
+  ) => void // ★ 追加: ホバーカード内の返信ボタン用 ★
 }
 
 export type CommentFormRefHandle = {
@@ -40,6 +48,8 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(
       onCancelReply,
       replyToCommentNumber,
       replyToCommentName,
+      allComments, // ★ 受け取るプロパティに追加 ★
+      onReplyClick, // ★ 受け取るプロパティに追加 ★
     },
     ref,
   ) => {
@@ -124,12 +134,19 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(
     }
 
     // ★ 変更: フォームタイトルを「〇〇へのコメント」形式に変更 ★
-    const formTitle =
+    const formTitleContent =
       parentId &&
       replyToCommentNumber !== undefined &&
-      replyToCommentName !== undefined
-        ? `>>${replyToCommentNumber}. ${replyToCommentName}へのコメント` // 変更点
-        : 'コメントを投稿'
+      replyToCommentName !== undefined ? (
+        <CommentTitleMention
+          commentNumber={replyToCommentNumber}
+          commentName={replyToCommentName}
+          allComments={allComments} // ★ allComments を渡す ★
+          onReplyClick={onReplyClick} // ★ onReplyClick を渡す ★
+        />
+      ) : (
+        'コメントを投稿'
+      )
 
     return (
       <form
@@ -138,7 +155,9 @@ const CommentForm = forwardRef<CommentFormRefHandle, CommentFormProps>(
         ref={formRef}
       >
         <div className="flex items-center justify-between mb-2">
-          <h4 className="text-lg font-semibold">{formTitle}</h4>
+          <h4 className="text-lg font-semibold">
+            {formTitleContent} {/* ★ コンテンツを直接レンダリング ★ */}
+          </h4>
           {onCancelReply && (
             <button
               type="button"

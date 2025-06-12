@@ -4,11 +4,12 @@ import { useComments } from '@/hooks/useComments'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import Spinner from '@/components/Header/Spinner'
-import type { Comment } from '@/types/comment' // Comment型は必要
-// import type { CommentWithReplyInfo } from '@/types/comment'; // ★ 削除: 直接使用されていないため削除 ★
+import type { Comment } from '@/types/comment'
 import { useState, useCallback, useRef, useMemo } from 'react'
 import type { CommentFormRefHandle } from './CommentForm'
 import { extractMentionedCommentNumbers } from '@/utils/format'
+// CommentWithReplyInfo 型をインポート (必要に応じて)
+import type { CommentWithReplyInfo } from '@/types/comment'
 
 interface Props {
   blogId: string
@@ -35,7 +36,6 @@ const Comments = ({ blogId }: Props) => {
     date: Date
     parentId?: string | null
   }) => {
-    // Comment型はここで使用されています
     const newComment: Comment = {
       id: newCommentData.id,
       name: newCommentData.name,
@@ -79,7 +79,8 @@ const Comments = ({ blogId }: Props) => {
 
   const isReplyFormOpen = replyingToCommentId !== null
 
-  const commentsWithReplyInfo = useMemo(() => {
+  const commentsWithReplyInfo: CommentWithReplyInfo[] = useMemo(() => {
+    // ★ 型を明示的に指定 ★
     const sortedComments = [...comments].sort(
       (a, b) => a.date.getTime() - b.date.getTime(),
     )
@@ -111,7 +112,6 @@ const Comments = ({ blogId }: Props) => {
       })
     })
 
-    // ここでCommentWithReplyInfo型が推論されるため、明示的なインポートは不要
     return sortedComments.map((comment, index) => ({
       ...comment,
       displayNumber: index + 1,
@@ -128,6 +128,8 @@ const Comments = ({ blogId }: Props) => {
           blogId={blogId}
           onCommentAdded={handleTopLevelCommentAdded}
           ref={commentFormRef}
+          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
+          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
         />
       </div>
     )
@@ -156,6 +158,8 @@ const Comments = ({ blogId }: Props) => {
           blogId={blogId}
           onCommentAdded={handleTopLevelCommentAdded}
           ref={commentFormRef}
+          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
+          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
         />
       )}
 
@@ -168,6 +172,8 @@ const Comments = ({ blogId }: Props) => {
           replyToCommentNumber={replyingToCommentNumber}
           replyToCommentName={replyingToCommentName}
           ref={commentFormRef}
+          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
+          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
         />
       )}
     </div>
