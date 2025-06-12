@@ -9,11 +9,22 @@ interface HoverCardProps {
   comment: CommentWithReplyInfo
   x: number
   y: number
-  onReplyClick: (commentId: string, commentNumber: number, commentName: string) => void
+  onReplyClick: (
+    commentId: string,
+    commentNumber: number,
+    commentName: string,
+  ) => void
   side?: 'left' | 'right' // ★ 追加: 表示方向を指定するプロパティ ★
 }
 
-const HoverCard = ({ comment, x, y, onReplyClick, side = 'right' }: HoverCardProps) => { // ★ side のデフォルト値を 'right' に変更 ★
+const HoverCard = ({
+  comment,
+  x,
+  y,
+  onReplyClick,
+  side = 'right',
+}: HoverCardProps) => {
+  // ★ side のデフォルト値を 'right' に変更 ★
   const hoverCardRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
@@ -32,7 +43,8 @@ const HoverCard = ({ comment, x, y, onReplyClick, side = 'right' }: HoverCardPro
       // --- X座標の調整 (side プロパティに基づいて左右を決定) ---
       let newLeft: number
 
-      if (side === 'right') { // ★ side が 'right' の場合 ★
+      if (side === 'right') {
+        // ★ side が 'right' の場合 ★
         newLeft = x + 10 // カーソルの右に表示
         // 画面右端からはみ出す場合、左に調整
         if (newLeft + cardWidth > screenWidth) {
@@ -40,7 +52,8 @@ const HoverCard = ({ comment, x, y, onReplyClick, side = 'right' }: HoverCardPro
           // それでも画面左端からはみ出す場合、左端に固定
           if (newLeft < 0) newLeft = 10
         }
-      } else { // ★ side が 'left' の場合 (デフォルト動作) ★
+      } else {
+        // ★ side が 'left' の場合 (デフォルト動作) ★
         newLeft = x - cardWidth - 10 // カーソルの左に表示
         // 画面左端からはみ出す場合、右に調整
         if (newLeft < 0) {

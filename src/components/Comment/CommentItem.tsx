@@ -43,7 +43,12 @@ const CommentItem = ({
   )
 
   const showHoverCard = useCallback(
-    (e: MouseEvent, commentNum: number, displaySide: 'left' | 'right' = 'right') => { // ★ displaySide 引数を追加 ★
+    (
+      e: MouseEvent,
+      commentNum: number,
+      displaySide: 'left' | 'right' = 'right',
+    ) => {
+      // ★ displaySide 引数を追加 ★
       const targetComment = findCommentByNumber(commentNum)
       if (targetComment) {
         setHoveredCommentData(targetComment)
@@ -68,8 +73,8 @@ const CommentItem = ({
     ) => {
       // ReactMouseEvent から MouseEvent に変換して showHoverCard に渡す
       // event.nativeEvent を使用するか、必要なプロパティを手動で渡す
-      const syntheticMouseEvent = event.nativeEvent as MouseEvent;
-      showHoverCard(syntheticMouseEvent, repliedByCommentNumber, 'left'); // ★ ※[番号] の場合は 'left' を指定 ★
+      const syntheticMouseEvent = event.nativeEvent as MouseEvent
+      showHoverCard(syntheticMouseEvent, repliedByCommentNumber, 'left') // ★ ※[番号] の場合は 'left' を指定 ★
     },
     [showHoverCard], // showHoverCard が依存配列に含まれるように変更
   )
