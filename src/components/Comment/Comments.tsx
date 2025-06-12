@@ -1,10 +1,11 @@
-// src/components/comments/Comments.tsx
+// src/components/Comment/Comments.tsx
 'use client'
 import { useComments } from '@/hooks/useComments'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import Spinner from '@/components/Header/Spinner'
-import type { Comment } from '@/types/comment'
+import type { Comment } from '@/types/comment' // Comment型は必要
+// import type { CommentWithReplyInfo } from '@/types/comment'; // ★ 削除: 直接使用されていないため削除 ★
 import { useState, useCallback, useRef, useMemo } from 'react'
 import type { CommentFormRefHandle } from './CommentForm'
 import { extractMentionedCommentNumbers } from '@/utils/format'
@@ -34,6 +35,7 @@ const Comments = ({ blogId }: Props) => {
     date: Date
     parentId?: string | null
   }) => {
+    // Comment型はここで使用されています
     const newComment: Comment = {
       id: newCommentData.id,
       name: newCommentData.name,
@@ -109,6 +111,7 @@ const Comments = ({ blogId }: Props) => {
       })
     })
 
+    // ここでCommentWithReplyInfo型が推論されるため、明示的なインポートは不要
     return sortedComments.map((comment, index) => ({
       ...comment,
       displayNumber: index + 1,
@@ -144,7 +147,6 @@ const Comments = ({ blogId }: Props) => {
       ) : (
         <CommentList
           comments={commentsWithReplyInfo}
-          // blogId={blogId} // ★ 削除: CommentList は blogId を必要としなくなったため、ここから削除 ★
           onReplyClick={handleReplyClick}
         />
       )}

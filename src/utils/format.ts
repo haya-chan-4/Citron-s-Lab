@@ -11,9 +11,9 @@ export const anchorCommentMentions = (text: string) => {
 
   return text.replace(commentMentionRegex, (match, p1) => {
     const commentNumber = p1
-    // ★ 変更: href に直接ターゲットIDを指定 ★
-    // onclick が機能しない場合でも、ブラウザのデフォルト動作でIDへのスクロールが試みられる
-    return `<a href="#comment-${commentNumber}" class="text-blue-500 hover:underline font-bold" onclick="document.getElementById('comment-${commentNumber}')?.scrollIntoView({ behavior: 'smooth' })">${match}</a>`
+    // ★ 変更: data-comment-number と data-type="mention" 属性を追加しました ★
+    // onclick 属性は CommentItem.tsx のイベントハンドラーで処理されるため、ここから削除しました
+    return `<a href="#comment-${commentNumber}" class="text-blue-500 hover:underline font-bold" data-comment-number="${commentNumber}" data-type="mention">${match}</a>`
   })
 }
 

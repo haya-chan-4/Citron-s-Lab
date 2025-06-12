@@ -1,8 +1,8 @@
-// src/components/comments/CommentList.tsx
+// src/components/Comment/CommentList.tsx
 'use client'
 import React from 'react'
-// import type { Comment } from '@/types/comment'; // ★ 削除: Comment型は直接使用されていないため削除 ★
-import CommentItem, { CommentWithReplyInfo } from './CommentItem' // CommentWithReplyInfoは引き続き必要
+import CommentItem from './CommentItem'
+import type { CommentWithReplyInfo } from '@/types/comment' // Comment型は直接使用されていないため削除
 
 interface CommentListProps {
   comments: CommentWithReplyInfo[]
