@@ -5,10 +5,9 @@ import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import Spinner from '@/components/Header/Spinner'
 import type { Comment } from '@/types/comment'
-import { useState, useCallback, useRef, useMemo } from 'react'
+import { useState, useCallback, useRef, useMemo, useEffect } from 'react' // useEffect は残しておきます
 import type { CommentFormRefHandle } from './CommentForm'
 import { extractMentionedCommentNumbers } from '@/utils/format'
-// CommentWithReplyInfo 型をインポート (必要に応じて)
 import type { CommentWithReplyInfo } from '@/types/comment'
 
 interface Props {
@@ -16,7 +15,8 @@ interface Props {
 }
 
 const Comments = ({ blogId }: Props) => {
-  const { comments, loading, error, addCommentLocally } = useComments(blogId)
+  // ★ 変更点: addCommentLocally を削除し、fetchComments を受け取る ★
+  const { comments, loading, error, postComment, fetchComments } = useComments(blogId)
   const [replyingToCommentId, setReplyingToCommentId] = useState<string | null>(
     null,
   )
@@ -29,25 +29,22 @@ const Comments = ({ blogId }: Props) => {
 
   const commentFormRef = useRef<CommentFormRefHandle>(null)
 
-  const handleTopLevelCommentAdded = (newCommentData: {
+  // コメント投稿が完了した後の処理
+  // `onCommentAdded` は CommentForm から呼ばれる投稿完了通知ハンドラです。
+  // ここではフォームのリセットのみを行い、`comments` ステートは更新しません。
+  const handleTopLevelCommentAdded = useCallback((newCommentData: {
     id: string
     name: string
     body: string
     date: Date
     parentId?: string | null
   }) => {
-    const newComment: Comment = {
-      id: newCommentData.id,
-      name: newCommentData.name,
-      body: newCommentData.body,
-      date: newCommentData.date,
-      parentId: newCommentData.parentId || null,
-    }
-    addCommentLocally(newComment)
+    // フォームをリセット
     setReplyingToCommentId(null)
     setReplyingToCommentNumber(undefined)
     setReplyingToCommentName(undefined)
-  }
+    // ここで fetchComments() を呼ぶと投稿直後に反映されてしまうので、呼ばない
+  }, []); // 依存配列は空でOK
 
   const handleReplyClick = useCallback(
     (commentId: string, commentNumber: number, commentName: string) => {
@@ -80,10 +77,20 @@ const Comments = ({ blogId }: Props) => {
   const isReplyFormOpen = replyingToCommentId !== null
 
   const commentsWithReplyInfo: CommentWithReplyInfo[] = useMemo(() => {
-    // ★ 型を明示的に指定 ★
     const sortedComments = [...comments].sort(
       (a, b) => a.date.getTime() - b.date.getTime(),
     )
+
+    // ★ 重複IDのデバッグチェックは残しておきます ★
+    const idsEncountered = new Set<string>();
+    for (const comment of sortedComments) {
+        if (idsEncountered.has(comment.id)) {
+            console.error("⛔ DUPLICATE KEY DETECTED IN commentsWithReplyInfo (after fetch):", comment.id, "This will cause React warnings and potential UI issues.");
+            // ここで重複をフィルターしたい場合は、`filter` を追加することもできますが、
+            // 根本原因はデータソースにあるため、デバッグ用として残すのが良いでしょう。
+        }
+        idsEncountered.add(comment.id);
+    }
 
     const commentIdToNumberMap = new Map<string, number>()
     sortedComments.forEach((comment, index) => {
@@ -117,7 +124,7 @@ const Comments = ({ blogId }: Props) => {
       displayNumber: index + 1,
       repliedByNumbers: repliedByMap.get(index + 1) || [],
     }))
-  }, [comments])
+  }, [comments]) // `comments` が変更されたときだけ再計算
 
   if (error) {
     return (
@@ -128,8 +135,8 @@ const Comments = ({ blogId }: Props) => {
           blogId={blogId}
           onCommentAdded={handleTopLevelCommentAdded}
           ref={commentFormRef}
-          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
-          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
+          allComments={commentsWithReplyInfo}
+          onReplyClick={handleReplyClick}
         />
       </div>
     )
@@ -153,16 +160,18 @@ const Comments = ({ blogId }: Props) => {
         />
       )}
 
+      {/* トップレベルコメントフォーム */}
       {!isReplyFormOpen && (
         <CommentForm
           blogId={blogId}
           onCommentAdded={handleTopLevelCommentAdded}
           ref={commentFormRef}
-          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
-          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
+          allComments={commentsWithReplyInfo}
+          onReplyClick={handleReplyClick}
         />
       )}
 
+      {/* 返信コメントフォーム */}
       {isReplyFormOpen && (
         <CommentForm
           blogId={blogId}
@@ -172,8 +181,8 @@ const Comments = ({ blogId }: Props) => {
           replyToCommentNumber={replyingToCommentNumber}
           replyToCommentName={replyingToCommentName}
           ref={commentFormRef}
-          allComments={commentsWithReplyInfo} // ★ 追加: ここで渡す ★
-          onReplyClick={handleReplyClick} // ★ 追加: ここで渡す ★
+          allComments={commentsWithReplyInfo}
+          onReplyClick={handleReplyClick}
         />
       )}
     </div>

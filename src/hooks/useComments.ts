@@ -6,10 +6,10 @@ import {
   query,
   where,
   orderBy,
-  onSnapshot,
+  getDocs, // ★ getDocs をインポート ★
   addDoc,
   serverTimestamp,
-  Timestamp, // Firebase SDKのTimestamp型をインポート
+  Timestamp,
 } from 'firebase/firestore'
 import type { Comment, FirebaseCommentData } from '@/types/comment'
 
@@ -19,8 +19,7 @@ const convertTimestampToDate = (
   if (timestamp instanceof Timestamp) {
     return timestamp.toDate()
   }
-  // ★ 変更: console.warn を削除 ★
-  return new Date() // `null` や `undefined` の場合は現在の時刻を返す
+  return new Date() // null や undefined の場合は現在の時刻を返す
 }
 
 export const useComments = (blogId: string) => {
@@ -28,48 +27,53 @@ export const useComments = (blogId: string) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  useEffect(() => {
+  // ★ コメントを取得する関数を定義（リアルタイムではない一度きりの取得） ★
+  const fetchComments = useCallback(async () => {
     if (!blogId) {
-      setLoading(false)
-      return
+      setComments([]); // blogId がない場合は空にする
+      setLoading(false);
+      return;
     }
 
-    const commentsCollectionRef = collection(db, 'comments')
-    const q = query(
-      commentsCollectionRef,
-      where('blogId', '==', blogId),
-      orderBy('date', 'asc'), // 日付順でソート
-    )
+    setLoading(true);
+    setError(null);
+    try {
+      const commentsCollectionRef = collection(db, 'comments');
+      const q = query(
+        commentsCollectionRef,
+        where('blogId', '==', blogId),
+        orderBy('date', 'asc'),
+      );
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const fetchedComments: Comment[] = snapshot.docs.map((doc) => {
-          const data = doc.data() as FirebaseCommentData
-          return {
-            id: doc.id,
-            name: data.name,
-            body: data.body,
-            date: convertTimestampToDate(data.date),
-            parentId: data.parentId || null,
-          }
-        })
-        setComments(fetchedComments)
-        setLoading(false)
-      },
-      (err) => {
-        console.error('Error fetching comments:', err)
-        setError(err)
-        setLoading(false)
-      },
-    )
+      const querySnapshot = await getDocs(q); // ★ getDocs を使用 ★
+      const fetchedComments: Comment[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data() as FirebaseCommentData;
+        return {
+          id: doc.id,
+          name: data.name,
+          body: data.body,
+          date: convertTimestampToDate(data.date),
+          parentId: data.parentId || null,
+        };
+      });
+      setComments(fetchedComments); // コメントステートを更新
+    } catch (err) {
+      console.error('Error fetching comments:', err);
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [blogId]); // blogId が変更されたら関数を再生成
 
-    return () => unsubscribe()
-  }, [blogId])
+  // ★ コンポーネントマウント時に一度コメントをフェッチ ★
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]); // fetchComments が変更されたら再実行（初回のみ実行されるように useCallback と組み合わせる）
 
-  const addCommentLocally = useCallback((newComment: Comment) => {
-    setComments((prevComments) => [...prevComments, newComment])
-  }, [])
+  // ★ addCommentLocally はこのユースケースでは不要なので削除します ★
+  // なぜなら、投稿後に即時反映させないことが目的なので、ローカルでコメントを追加する必要がないためです。
+  // もし将来的に「投稿直後はローカルのみ反映、リロードで全体反映」のようにしたい場合は、
+  // ここで addCommentLocally を再導入し、`Comments.tsx` 側で呼び出すようにしてください。
 
   const postComment = useCallback(
     async (
@@ -89,14 +93,17 @@ export const useComments = (blogId: string) => {
         }
         const docRef = await addDoc(collection(db, 'comments'), commentData)
 
-        const newComment: Comment = {
+        // ★ ここでローカルステートを更新しない ★
+        // Firebase に保存されたコメントの ID を含む情報を呼び出し元に返しますが、
+        // この情報を使ってコメントリストを即座に更新することはしません。
+        const postedComment: Comment = {
           id: docRef.id,
           name,
           body,
-          date: new Date(),
+          date: new Date(), // これはクライアント側のタイムスタンプなので、サーバーのタイムスタンプとは厳密には一致しませんが、動作に影響はありません。
           parentId: parentId,
         }
-        return newComment
+        return postedComment
       } catch (err) {
         console.error('Error posting comment:', err)
         setError(err as Error)
@@ -106,5 +113,6 @@ export const useComments = (blogId: string) => {
     [],
   )
 
-  return { comments, loading, error, addCommentLocally, postComment }
+  // ★ 戻り値から addCommentLocally を削除 ★
+  return { comments, loading, error, postComment, fetchComments }
 }
