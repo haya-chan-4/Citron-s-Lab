@@ -1,12 +1,12 @@
 // src/hooks/useComments.ts
 import { useState, useEffect, useCallback } from 'react'
-import { db } from '@/libs/firebase' // Firebase Firestore インスタンス
+import { db } from '@/libs/firebase'
 import {
   collection,
   query,
   where,
   orderBy,
-  getDocs, // ★ getDocs をインポート ★
+  getDocs,
   addDoc,
   serverTimestamp,
   Timestamp,
@@ -19,7 +19,7 @@ const convertTimestampToDate = (
   if (timestamp instanceof Timestamp) {
     return timestamp.toDate()
   }
-  return new Date() // null や undefined の場合は現在の時刻を返す
+  return new Date()
 }
 
 export const useComments = (blogId: string) => {
@@ -27,10 +27,9 @@ export const useComments = (blogId: string) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  // ★ コメントを取得する関数を定義（リアルタイムではない一度きりの取得） ★
   const fetchComments = useCallback(async () => {
     if (!blogId) {
-      setComments([]) // blogId がない場合は空にする
+      setComments([])
       setLoading(false)
       return
     }
@@ -45,7 +44,7 @@ export const useComments = (blogId: string) => {
         orderBy('date', 'asc'),
       )
 
-      const querySnapshot = await getDocs(q) // ★ getDocs を使用 ★
+      const querySnapshot = await getDocs(q)
       const fetchedComments: Comment[] = querySnapshot.docs.map((doc) => {
         const data = doc.data() as FirebaseCommentData
         return {
@@ -56,24 +55,18 @@ export const useComments = (blogId: string) => {
           parentId: data.parentId || null,
         }
       })
-      setComments(fetchedComments) // コメントステートを更新
+      setComments(fetchedComments)
     } catch (err) {
       console.error('Error fetching comments:', err)
       setError(err as Error)
     } finally {
       setLoading(false)
     }
-  }, [blogId]) // blogId が変更されたら関数を再生成
+  }, [blogId])
 
-  // ★ コンポーネントマウント時に一度コメントをフェッチ ★
   useEffect(() => {
     fetchComments()
-  }, [fetchComments]) // fetchComments が変更されたら再実行（初回のみ実行されるように useCallback と組み合わせる）
-
-  // ★ addCommentLocally はこのユースケースでは不要なので削除します ★
-  // なぜなら、投稿後に即時反映させないことが目的なので、ローカルでコメントを追加する必要がないためです。
-  // もし将来的に「投稿直後はローカルのみ反映、リロードで全体反映」のようにしたい場合は、
-  // ここで addCommentLocally を再導入し、`Comments.tsx` 側で呼び出すようにしてください。
+  }, [fetchComments])
 
   const postComment = useCallback(
     async (
@@ -93,17 +86,14 @@ export const useComments = (blogId: string) => {
         }
         const docRef = await addDoc(collection(db, 'comments'), commentData)
 
-        // ★ ここでローカルステートを更新しない ★
-        // Firebase に保存されたコメントの ID を含む情報を呼び出し元に返しますが、
-        // この情報を使ってコメントリストを即座に更新することはしません。
         const postedComment: Comment = {
-          id: docRef.id,
+          id: docRef.id, // ★ docRef.id を使用 ★
           name,
           body,
-          date: new Date(), // これはクライアント側のタイムスタンプなので、サーバーのタイムスタンプとは厳密には一致しませんが、動作に影響はありません。
+          date: new Date(), // クライアント側のタイムスタンプ
           parentId: parentId,
         }
-        return postedComment
+        return postedComment // ★ 投稿されたコメントオブジェクトを返す ★
       } catch (err) {
         console.error('Error posting comment:', err)
         setError(err as Error)
@@ -113,6 +103,5 @@ export const useComments = (blogId: string) => {
     [],
   )
 
-  // ★ 戻り値から addCommentLocally を削除 ★
   return { comments, loading, error, postComment, fetchComments }
 }
