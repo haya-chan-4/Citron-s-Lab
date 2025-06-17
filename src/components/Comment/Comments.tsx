@@ -4,8 +4,8 @@ import { useComments } from '@/hooks/useComments'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import Spinner from '@/components/Header/Spinner'
-import type { Comment } from '@/types/comment'
-import { useState, useCallback, useRef, useMemo, useEffect } from 'react' // useEffect は残しておきます
+// import type { Comment } from '@/types/comment' // ★ 削除: 直接使用されていないため削除 ★
+import { useState, useCallback, useRef, useMemo } from 'react' // ★ useEffect を削除 ★
 import type { CommentFormRefHandle } from './CommentForm'
 import { extractMentionedCommentNumbers } from '@/utils/format'
 import type { CommentWithReplyInfo } from '@/types/comment'
@@ -15,8 +15,15 @@ interface Props {
 }
 
 const Comments = ({ blogId }: Props) => {
-  // ★ 変更点: addCommentLocally を削除し、fetchComments を受け取る ★
-  const { comments, loading, error, postComment, fetchComments } = useComments(blogId)
+  // `postComment` と `fetchComments` は CommentForm に渡すため、ここで受け取っておくのは正しいです。
+  // ESLintが未使用と判断しているのは、このファイル内で直接 `postComment()` や `fetchComments()` と呼んでいないためです。
+  // 通常は `CommentForm` に渡すことで使用していると判断されますが、ESLintの設定によってはこのように警告が出ます。
+  // 今回は、`CommentForm` がこれらの関数を直接受け取るわけではないので、
+  // `Comments.tsx` が `postComment` を直接呼び出さなくなりました。（CommentForm内で呼ばれる）
+  // そのため、useComments から返された `postComment` と `fetchComments` は、このコンポーネント内では**未使用**と判断されます。
+  // 警告を消すには、受け取らないようにするか、ESLintのルールを無効にするのが一般的ですが、
+  // 後者の理由（`fetchComments`が実際には必要ないため）で、今回は受け取り自体を削除します。
+  const { comments, loading, error } = useComments(blogId) // ★ postComment, fetchComments を削除 ★
   const [replyingToCommentId, setReplyingToCommentId] = useState<string | null>(
     null,
   )
@@ -30,21 +37,14 @@ const Comments = ({ blogId }: Props) => {
   const commentFormRef = useRef<CommentFormRefHandle>(null)
 
   // コメント投稿が完了した後の処理
-  // `onCommentAdded` は CommentForm から呼ばれる投稿完了通知ハンドラです。
-  // ここではフォームのリセットのみを行い、`comments` ステートは更新しません。
-  const handleTopLevelCommentAdded = useCallback((newCommentData: {
-    id: string
-    name: string
-    body: string
-    date: Date
-    parentId?: string | null
-  }) => {
+  // `newCommentData` は CommentForm から渡されますが、この関数内では使われないため削除します。
+  const handleTopLevelCommentAdded = useCallback(() => {
+    // ★ newCommentData パラメータを削除 ★
     // フォームをリセット
     setReplyingToCommentId(null)
     setReplyingToCommentNumber(undefined)
     setReplyingToCommentName(undefined)
-    // ここで fetchComments() を呼ぶと投稿直後に反映されてしまうので、呼ばない
-  }, []); // 依存配列は空でOK
+  }, [])
 
   const handleReplyClick = useCallback(
     (commentId: string, commentNumber: number, commentName: string) => {
@@ -81,15 +81,16 @@ const Comments = ({ blogId }: Props) => {
       (a, b) => a.date.getTime() - b.date.getTime(),
     )
 
-    // ★ 重複IDのデバッグチェックは残しておきます ★
-    const idsEncountered = new Set<string>();
+    const idsEncountered = new Set<string>()
     for (const comment of sortedComments) {
-        if (idsEncountered.has(comment.id)) {
-            console.error("⛔ DUPLICATE KEY DETECTED IN commentsWithReplyInfo (after fetch):", comment.id, "This will cause React warnings and potential UI issues.");
-            // ここで重複をフィルターしたい場合は、`filter` を追加することもできますが、
-            // 根本原因はデータソースにあるため、デバッグ用として残すのが良いでしょう。
-        }
-        idsEncountered.add(comment.id);
+      if (idsEncountered.has(comment.id)) {
+        console.error(
+          '⛔ DUPLICATE KEY DETECTED IN commentsWithReplyInfo (after fetch):',
+          comment.id,
+          'This will cause React warnings and potential UI issues.',
+        )
+      }
+      idsEncountered.add(comment.id)
     }
 
     const commentIdToNumberMap = new Map<string, number>()
@@ -124,7 +125,7 @@ const Comments = ({ blogId }: Props) => {
       displayNumber: index + 1,
       repliedByNumbers: repliedByMap.get(index + 1) || [],
     }))
-  }, [comments]) // `comments` が変更されたときだけ再計算
+  }, [comments])
 
   if (error) {
     return (

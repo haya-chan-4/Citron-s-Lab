@@ -30,45 +30,45 @@ export const useComments = (blogId: string) => {
   // ★ コメントを取得する関数を定義（リアルタイムではない一度きりの取得） ★
   const fetchComments = useCallback(async () => {
     if (!blogId) {
-      setComments([]); // blogId がない場合は空にする
-      setLoading(false);
-      return;
+      setComments([]) // blogId がない場合は空にする
+      setLoading(false)
+      return
     }
 
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
     try {
-      const commentsCollectionRef = collection(db, 'comments');
+      const commentsCollectionRef = collection(db, 'comments')
       const q = query(
         commentsCollectionRef,
         where('blogId', '==', blogId),
         orderBy('date', 'asc'),
-      );
+      )
 
-      const querySnapshot = await getDocs(q); // ★ getDocs を使用 ★
+      const querySnapshot = await getDocs(q) // ★ getDocs を使用 ★
       const fetchedComments: Comment[] = querySnapshot.docs.map((doc) => {
-        const data = doc.data() as FirebaseCommentData;
+        const data = doc.data() as FirebaseCommentData
         return {
           id: doc.id,
           name: data.name,
           body: data.body,
           date: convertTimestampToDate(data.date),
           parentId: data.parentId || null,
-        };
-      });
-      setComments(fetchedComments); // コメントステートを更新
+        }
+      })
+      setComments(fetchedComments) // コメントステートを更新
     } catch (err) {
-      console.error('Error fetching comments:', err);
-      setError(err as Error);
+      console.error('Error fetching comments:', err)
+      setError(err as Error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [blogId]); // blogId が変更されたら関数を再生成
+  }, [blogId]) // blogId が変更されたら関数を再生成
 
   // ★ コンポーネントマウント時に一度コメントをフェッチ ★
   useEffect(() => {
-    fetchComments();
-  }, [fetchComments]); // fetchComments が変更されたら再実行（初回のみ実行されるように useCallback と組み合わせる）
+    fetchComments()
+  }, [fetchComments]) // fetchComments が変更されたら再実行（初回のみ実行されるように useCallback と組み合わせる）
 
   // ★ addCommentLocally はこのユースケースでは不要なので削除します ★
   // なぜなら、投稿後に即時反映させないことが目的なので、ローカルでコメントを追加する必要がないためです。
